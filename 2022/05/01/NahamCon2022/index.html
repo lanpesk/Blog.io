@@ -1,0 +1,493 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="lanpesk">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="NahamCon CTF 2022 中 XORROX、Unimod、Baby RSA Quiz 和 Ostrich 的题解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NahamCon2022">
+<meta property="og:url" content="http://example.com/2022/05/01/NahamCon2022/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="NahamCon CTF 2022 中 XORROX、Unimod、Baby RSA Quiz 和 Ostrich 的题解。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-01T04:17:28.000Z">
+<meta property="article:modified_time" content="2022-05-01T04:27:08.915Z">
+<meta property="article:author" content="lanpesk">
+<meta property="article:tag" content="writeup">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>NahamCon2022 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>lanpesk</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/banner/62506385_p0.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="NahamCon2022">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-01 12:17" pubdate>
+        2022年5月1日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">NahamCon2022</h1>
+            
+            <div class="markdown-body">
+              <p>NahamCon CTF 2022 中 XORROX、Unimod、Baby RSA Quiz 和 Ostrich 的题解。</p>
+<span id="more"></span>
+
+<p>今天玩了玩NahamCon CTF 2022，凌晨三点开始比赛。当然，我肯定是睡觉起床了再打。</p>
+<p>起床之后队友把热身题全扫了，我也没啥题可以做了（菜鸡一个。后面找了以下难度不大的crypto写。以下是writeup。后面我还会写一下别人的writeup，因为有些题没写出来。</p>
+<h1 id="XORROX"><a href="#XORROX" class="headerlink" title="XORROX"></a>XORROX</h1><figure class="highlight python"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python3</span><br><br><span class="hljs-keyword">import</span> random<br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;flag.txt&quot;</span>, <span class="hljs-string">&quot;rb&quot;</span>) <span class="hljs-keyword">as</span> filp:<br>    flag = filp.read().strip()<br><br>key = [random.randint(<span class="hljs-number">1</span>, <span class="hljs-number">256</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(flag))]<br><br>xorrox = []<br>enc = []<br><span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(key):<br>    k = <span class="hljs-number">1</span><br>    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):<br>        k ^= key[j]<br>    xorrox.append(k)<br>    enc.append(flag[i] ^ v)<br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;output.txt&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">as</span> filp:<br>    filp.write(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;xorrox=&#125;</span>\n&quot;</span>)<br>    filp.write(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;enc=&#125;</span>\n&quot;</span>)<br><br></code></pre></td></tr></table></figure>
+
+<p>可以看到是一个简单的多次异或。异或是可逆的，而且我们的key元素中的第一个也就是key[0]是不会被修改的。所以我们只需要再跑一下这个循环，把key跑出来就行了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># solve.py</span><br>xorrox=[<span class="hljs-number">1</span>, <span class="hljs-number">209</span>, <span class="hljs-number">108</span>, <span class="hljs-number">239</span>, <span class="hljs-number">4</span>, <span class="hljs-number">55</span>, <span class="hljs-number">34</span>, <span class="hljs-number">174</span>, <span class="hljs-number">79</span>, <span class="hljs-number">117</span>, <span class="hljs-number">8</span>, <span class="hljs-number">222</span>, <span class="hljs-number">123</span>, <span class="hljs-number">99</span>, <span class="hljs-number">184</span>, <span class="hljs-number">202</span>, <span class="hljs-number">95</span>, <span class="hljs-number">255</span>, <span class="hljs-number">175</span>, <span class="hljs-number">138</span>, <span class="hljs-number">150</span>, <span class="hljs-number">28</span>, <span class="hljs-number">183</span>, <span class="hljs-number">6</span>, <span class="hljs-number">168</span>, <span class="hljs-number">43</span>, <span class="hljs-number">205</span>, <span class="hljs-number">105</span>, <span class="hljs-number">92</span>, <span class="hljs-number">250</span>, <span class="hljs-number">28</span>, <span class="hljs-number">80</span>, <span class="hljs-number">31</span>, <span class="hljs-number">201</span>, <span class="hljs-number">46</span>, <span class="hljs-number">20</span>, <span class="hljs-number">50</span>, <span class="hljs-number">56</span>]<br>enc=[<span class="hljs-number">26</span>, <span class="hljs-number">188</span>, <span class="hljs-number">220</span>, <span class="hljs-number">228</span>, <span class="hljs-number">144</span>, <span class="hljs-number">1</span>, <span class="hljs-number">36</span>, <span class="hljs-number">185</span>, <span class="hljs-number">214</span>, <span class="hljs-number">11</span>, <span class="hljs-number">25</span>, <span class="hljs-number">178</span>, <span class="hljs-number">145</span>, <span class="hljs-number">47</span>, <span class="hljs-number">237</span>, <span class="hljs-number">70</span>, <span class="hljs-number">244</span>, <span class="hljs-number">149</span>, <span class="hljs-number">98</span>, <span class="hljs-number">20</span>, <span class="hljs-number">46</span>, <span class="hljs-number">187</span>, <span class="hljs-number">207</span>, <span class="hljs-number">136</span>, <span class="hljs-number">154</span>, <span class="hljs-number">231</span>, <span class="hljs-number">131</span>, <span class="hljs-number">193</span>, <span class="hljs-number">84</span>, <span class="hljs-number">148</span>, <span class="hljs-number">212</span>, <span class="hljs-number">126</span>, <span class="hljs-number">126</span>, <span class="hljs-number">226</span>, <span class="hljs-number">211</span>, <span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">119</span>]<br>key = []<br><span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(xorrox):<br>    k = <span class="hljs-number">1</span><br>    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):<br>        k ^= xorrox[j]<br>    xorrox[i] = k<br>    <span class="hljs-built_in">print</span>(<span class="hljs-built_in">chr</span>(enc[i]^k), end=<span class="hljs-string">&quot;&quot;</span>)<br>    key.append(k)<br><span class="hljs-built_in">print</span>(key, <span class="hljs-built_in">len</span>(key))<br><br>    <br>xorrox = []<br><span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(key):<br>    k = <span class="hljs-number">1</span><br>    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):<br>        k ^= key[j]<br>    xorrox.append(k)<br><span class="hljs-built_in">print</span>(xorrox)<br></code></pre></td></tr></table></figure>
+
+
+
+<h1 id="Unimod"><a href="#Unimod" class="headerlink" title="Unimod"></a>Unimod</h1><p>这题有点蛋疼。因为直接看数据文件格式有点不对。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> random<br><span class="hljs-keyword">import</span> libnum<br><br>flag = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;flag.txt&#x27;</span>, <span class="hljs-string">&#x27;r&#x27;</span>).read()<br>ct = <span class="hljs-string">&#x27;&#x27;</span><br>k = random.randrange(<span class="hljs-number">0</span>,<span class="hljs-number">0xFFFD</span>)<br><span class="hljs-comment"># k = 15449</span><br><span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> flag:<br>    <br>    ct += <span class="hljs-built_in">chr</span>((<span class="hljs-built_in">ord</span>(c) + k) % <span class="hljs-number">0xFFFD</span>)<br>    <br>    <span class="hljs-comment"># a = chr((ord(c) + k) % 0xFFFD)</span><br>    <span class="hljs-comment"># print((ord(c) + k) % 0xFFFD)</span><br>    <span class="hljs-comment"># print(libnum.s2n(chr((ord(c) + k) % 0xFFFD)))</span><br>    <span class="hljs-comment"># print(ord(a))</span><br><br><span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;out&#x27;</span>, <span class="hljs-string">&#x27;wb&#x27;</span>).write(ct.encode())<br><br></code></pre></td></tr></table></figure>
+
+<p>注释部分是我测试的部分。原题目是没有的。</p>
+<p>以下是原题目的十六进制数据。可以看到很明显的三个字节一个分组。但是从代码上看，我们的到的数据应该是两个字节一个分组。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">E9</span> A5 <span class="hljs-number">87</span> E9 A5 <span class="hljs-number">8</span>D E9 A5 <span class="hljs-number">82</span> E9 A5 <span class="hljs-number">88</span> E9 A5 <span class="hljs-number">9</span>C E9 A4 <span class="hljs-number">95</span> E9 A5 <span class="hljs-number">86</span> E9 A4 <span class="hljs-number">97</span> E9 A4 <span class="hljs-number">99</span> E9 A5 <span class="hljs-number">85</span> E9 A4 <span class="hljs-number">92</span> E9 A4 <span class="hljs-number">97</span> E9 A5 <span class="hljs-number">82</span> E9 A4 <span class="hljs-number">97</span> E9 A4 <span class="hljs-number">92</span> E9 A5 <span class="hljs-number">83</span> E9 A5 <span class="hljs-number">84</span> E9 A4 <span class="hljs-number">93</span> E9 A5 <span class="hljs-number">86</span> E9 A5 <span class="hljs-number">82</span> E9 A4 <span class="hljs-number">98</span> E9 A4 <span class="hljs-number">93</span> E9 A5 <span class="hljs-number">85</span> E9 A4 <span class="hljs-number">96</span> E9 A5 <span class="hljs-number">87</span> E9 A4 <span class="hljs-number">9</span>A E9 A4 <span class="hljs-number">98</span> E9 A4 <span class="hljs-number">92</span> E9 A4 <span class="hljs-number">94</span> E9 A4 <span class="hljs-number">95</span> E9 A4 <span class="hljs-number">95</span> E9 A5 <span class="hljs-number">86</span> E9 A4 <span class="hljs-number">99</span> E9 A4 <span class="hljs-number">95</span> E9 A5 <span class="hljs-number">87</span> E9 A4 <span class="hljs-number">92</span> E9 A4 <span class="hljs-number">92</span> E9 A5 <span class="hljs-number">9</span>E E9 A3 AB<br></code></pre></td></tr></table></figure>
+
+<p>所以有了注释中的三条输出语句：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">15565<br>14922637<br>15565<br></code></pre></td></tr></table></figure>
+
+<p>可以看到，这个数据经过编码成了三个字节。所以我们直接读文件，然后用三个字节分组，使用<strong>ord</strong>函数来解码，才能得到正确的值。</p>
+<p>这里其实有个k，但是影响不大。这里0xFFFD其实比我们ASCII码的范围大了太多。基本上不会出现取的k刚好在0xFFFD的边界上。所以直接解就行了，如果不行那也就再加个0xFFFD进行处理就行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># solve.py</span><br>data = <span class="hljs-built_in">open</span>(<span class="hljs-string">r&quot;out&quot;</span>, <span class="hljs-string">&quot;rb&quot;</span>).read()<br><br><span class="hljs-comment"># 反正挺坑的，一个2字节的数据二进制写入成了3字节，这里直接三字节分片然后用ord取他的数字就行</span><br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(data), <span class="hljs-number">3</span>):<br>    a = data[i:i+<span class="hljs-number">3</span>].decode()<br>    <span class="hljs-built_in">print</span>(<span class="hljs-built_in">chr</span>(<span class="hljs-built_in">ord</span>(a) - <span class="hljs-number">39137</span>), end=<span class="hljs-string">&quot;&quot;</span>)<br><br>    <span class="hljs-comment"># 通过猜测第一个字符是&#x27;f&#x27;， 来计算k = 39137</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h1 id="Baby-RSA-Quiz"><a href="#Baby-RSA-Quiz" class="headerlink" title="Baby RSA Quiz"></a>Baby RSA Quiz</h1><p>这题没有给文件而是以ssh的方式进行的。</p>
+<p>一共三小题，第一小题给的是个小n，直接分解就行了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell"> ---------<br>| Part 1: |<br> ---------<br>n = 115398298544369<br>e = 65537<br>ct = 37386859625793<br><br>What is the plaintext (in integer form)?<br></code></pre></td></tr></table></figure>
+
+<p>这个直接上网站一分解就行。得到p，q求解d，然后算m。这里答案是整型的，但其实也是能转成字符串的。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"> ---------<br>| Part 2: |<br> ---------<br> n = 21984385600649967782331863593924102436585066484191623195882222547673570244475780629687822167989708574426866726594728874805115343269798282457109572103808168717297643786879687407125835510708369369452066036081265495727817566573832554802942178842361272009775406486896598963082180982538712496148845771649987025233485619836564348850399478693602977813231635752371346486494990471592789061740477387129729970592609102941311866809610802313761260294058835607292101793124755896831042571976602987089357127373715869012159472398776658325559448411402063905089012465509274881162806001450685859679444595914638449991047584895744421268419<br> e = 3<br> ct = 26480272848384180570411447917437668635135597564435407928130220812155801611065536704781892656033726277516148813916446180796750368332515779970289682282804676030149428215146347671350240386440440048832713595112882403831539777582778645411270433913301224819057222081543727263602678819745693540865806160910293144052079393615890645460901858988883318691997438568705602949652125<br> What is the plaintext (in integer form)?<br></code></pre></td></tr></table></figure>
+
+<p>这里可以看到加密指数e很小，所以我们只需要开方求解就行了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># solve.py</span><br><span class="hljs-keyword">from</span> gmpy2 <span class="hljs-keyword">import</span> iroot<br><span class="hljs-keyword">import</span> libnum<br><br>e = <span class="hljs-number">0x3</span><br>n = <span class="hljs-number">21984385600649967782331863593924102436585066484191623195882222547673570244475780629687822167989708574426866726594728874805115343269798282457109572103808168717297643786879687407125835510708369369452066036081265495727817566573832554802942178842361272009775406486896598963082180982538712496148845771649987025233485619836564348850399478693602977813231635752371346486494990471592789061740477387129729970592609102941311866809610802313761260294058835607292101793124755896831042571976602987089357127373715869012159472398776658325559448411402063905089012465509274881162806001450685859679444595914638449991047584895744421268419</span><br>c = <span class="hljs-number">26480272848384180570411447917437668635135597564435407928130220812155801611065536704781892656033726277516148813916446180796750368332515779970289682282804676030149428215146347671350240386440440048832713595112882403831539777582778645411270433913301224819057222081543727263602678819745693540865806160910293144052079393615890645460901858988883318691997438568705602949652125</span><br><br>k = <span class="hljs-number">0</span><br><span class="hljs-keyword">while</span> <span class="hljs-number">1</span>:<br>    res = iroot(c + k * n, e)  <span class="hljs-comment"># c+k*n 开3次方根 能开3次方即可</span><br>    <span class="hljs-keyword">if</span> (res[<span class="hljs-number">1</span>] == <span class="hljs-literal">True</span>):<br>        <span class="hljs-built_in">print</span>(<span class="hljs-built_in">int</span>(res[<span class="hljs-number">0</span>]))<br>        <span class="hljs-built_in">print</span>(libnum.n2s(<span class="hljs-built_in">int</span>(res[<span class="hljs-number">0</span>])))  <span class="hljs-comment"># 转为字符串</span><br>        <span class="hljs-keyword">break</span><br>    k = k + <span class="hljs-number">1</span><br><br></code></pre></td></tr></table></figure>
+
+<p>这里我打印了数字也打印了字符串，是从我之前的代码上改的。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell"> ---------<br>| Part 3: |<br> ---------<br> q = p + 2<br>while !(isPrime(q)):<br>    q += 2<br>n = p*q<br>n = 88881615737488301225985044439881905195398292505026841973979114989583620386889966196936383863573165224625895278832099461610638739494998960540693208136536764698022077924393297727577553457866191347931512435919295847354039191586621873435195696477610004925566087150861042148930517495281441139741545346918379251933<br>e = 65537<br>ct = 20631059905657990621121472678172311137355898932087354262172309893885321498925560019065033573185005618575156342764326342253251212781095718707971251014407982342185739678572043698218123534431914415817339019215948120246829763194761668345794978860628612447418680047622373133912651452245133307912003452486642093319<br>What is the plaintext (in integer form)?<br></code></pre></td></tr></table></figure>
+
+<p>这里给出了两个素数生成的方法。可以看到这两个素数应该是比较接近的。</p>
+<p>所以直接用yafu尝试进行分解。yafu比较适合这种情况。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell">fac: factoring 88881615737488301225985044439881905195398292505026841973979114989583620386889966196936383863573165224625895278832099461610638739494998960540693208136536764698022077924393297727577553457866191347931512435919295847354039191586621873435195696477610004925566087150861042148930517495281441139741545346918379251933<br>fac: using pretesting plan: normal<br>fac: no tune info: using qs/gnfs crossover of 95 digits<br>div: primes less than 10000<br>fmt: 1000000 iterations<br>Total factoring time = 0.6750 seconds<br><br><br>***factors found***<br><br>P154 = 9427704690829486372323834254401690991535897190805758825455941539744129948703411885292076952568876153202122275131143524310245302189466786096848123870588379<br>P154 = 9427704690829486372323834254401690991535897190805758825455941539744129948703411885292076952568876153202122275131143524310245302189466786096848123870588327<br><br>ans = 1<br></code></pre></td></tr></table></figure>
+
+<p>可以看到很快就出答案了。这样p和q就分解出来了。后面就是单纯的rsa运算了。</p>
+<p>后面还做了一道隐写</p>
+<h1 id="Ostrich"><a href="#Ostrich" class="headerlink" title="Ostrich"></a>Ostrich</h1><p>一共给了三个文件。</p>
+<p>一张图片，一个算法，一个结果。</p>
+<p>应该对算法进行逆向就行了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> imageio<br><span class="hljs-keyword">from</span> PIL <span class="hljs-keyword">import</span> Image, GifImagePlugin<br><span class="hljs-keyword">from</span> Crypto.Util.number <span class="hljs-keyword">import</span> long_to_bytes <span class="hljs-keyword">as</span> l2b, bytes_to_long <span class="hljs-keyword">as</span> b2l<br><span class="hljs-keyword">import</span> random<br><span class="hljs-keyword">from</span> apng <span class="hljs-keyword">import</span> APNG<br><br>filenames = []<br>flag = <span class="hljs-string">&quot;REDACTED&quot;</span> <br><br>orig_filename = <span class="hljs-string">&quot;ostrich.jpg&quot;</span><br>orig_image = Image.<span class="hljs-built_in">open</span>(orig_filename)<br>pixels = orig_image.load()<br>width, height = orig_image.size<br>images = []<br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(flag)):<br>    new_filename = <span class="hljs-string">f&#x27;./images/ostrich<span class="hljs-subst">&#123;i&#125;</span>.png&#x27;</span><br>    new_image = Image.new(orig_image.mode, orig_image.size)<br>    new_pixels = new_image.load()<br>    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(width):<br>        <span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(height):<br>            new_pixels[x,y] = orig_image.getpixel((x, y))<br><br>    x = random.randrange(<span class="hljs-number">0</span>,width)<br>    y = random.randrange(<span class="hljs-number">0</span>,height)<br>    pixel = <span class="hljs-built_in">list</span>(orig_image.getpixel((x, y)))<br>    <span class="hljs-keyword">while</span>(pixel[<span class="hljs-number">2</span>] == <span class="hljs-number">0</span>):<br>        x = random.randrange(<span class="hljs-number">0</span>,width)<br>        y = random.randrange(<span class="hljs-number">0</span>,height)<br>        pixel = <span class="hljs-built_in">list</span>(orig_image.getpixel((random.randrange(<span class="hljs-number">0</span>,width), random.randrange(<span class="hljs-number">0</span>,height))))<br>    <br>    new_val = l2b(pixel[<span class="hljs-number">2</span>]*<span class="hljs-built_in">ord</span>(flag[i]))<br>    pixel[<span class="hljs-number">0</span>] = new_val[<span class="hljs-number">0</span>]<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(new_val) &gt; <span class="hljs-number">1</span>:<br>        pixel[<span class="hljs-number">1</span>] = new_val[<span class="hljs-number">1</span>]<br>    pixel[<span class="hljs-number">2</span>] = <span class="hljs-number">0</span><br><br>    new_pixels[x, y] = (pixel[<span class="hljs-number">0</span>], pixel[<span class="hljs-number">1</span>], pixel[<span class="hljs-number">2</span>])<br>    new_image.save(new_filename)<br>    filenames.append(new_filename)<br>    images.append(new_image)<br><br>APNG.from_files(filenames, delay=<span class="hljs-number">0</span>).save(<span class="hljs-string">&quot;result.apng&quot;</span>)<br><br></code></pre></td></tr></table></figure>
+
+<p>最后保存的是一个APNG文件，这是个动图文件，但这里不会动就是了。</p>
+<p>大致流程先看了一遍。我们先把文件提出来，这里的APNG动图也是多幅图片在一起构成的。每张图片里面嵌入了一个字节。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> PIL<br><span class="hljs-keyword">from</span> apng <span class="hljs-keyword">import</span> APNG<br><br>img = APNG.<span class="hljs-built_in">open</span>(<span class="hljs-string">r&quot;result.apng&quot;</span>)<br><br><span class="hljs-keyword">for</span> i, (png, control) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(img.frames):<br>    png.save(<span class="hljs-string">&quot;./extract/&#123;i&#125;.png&quot;</span>.<span class="hljs-built_in">format</span>(i=i))<br></code></pre></td></tr></table></figure>
+
+<p>一共提取了38张图片。</p>
+<p>来讲一下嵌入的流程。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">x = random.randrange(<span class="hljs-number">0</span>, width)<br>y = random.randrange(<span class="hljs-number">0</span>, height)<br>pixel = <span class="hljs-built_in">list</span>(orig_image.getpixel((x, y)))<br><span class="hljs-keyword">while</span> (pixel[<span class="hljs-number">2</span>] == <span class="hljs-number">0</span>):<br>    x = random.randrange(<span class="hljs-number">0</span>, width)<br>    y = random.randrange(<span class="hljs-number">0</span>, height)<br>    pixel = <span class="hljs-built_in">list</span>(orig_image.getpixel((random.randrange(<span class="hljs-number">0</span>, width), random.randrange(<span class="hljs-number">0</span>, height))))<br></code></pre></td></tr></table></figure>
+
+<p>最主要的部分在这里。</p>
+<p>这里要找一个B通道值不为0的点。原始图像中找一个B通道不为0的点，基本上所有的点都不可能B通道为0，所以其实就是随机的在里面找一个点。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">new_val = l2b(pixel[<span class="hljs-number">2</span>] * <span class="hljs-built_in">ord</span>(flag[i]))<br> pixel[<span class="hljs-number">0</span>] = new_val[<span class="hljs-number">0</span>]<br> <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(new_val) &gt; <span class="hljs-number">1</span>:<br>     pixel[<span class="hljs-number">1</span>] = new_val[<span class="hljs-number">1</span>]<br> pixel[<span class="hljs-number">2</span>] = <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<p>在这里面，又把我们的值改成了0。这就让这个点很好找了。。</p>
+<p>所以我们只需要找到这个点，读取这个点的像素值，然后和原始图像的这个点做运算就可以得到flag。</p>
+<p>只要和原图比较多了哪一个b通道值为0 的点就行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># solve.py</span><br><span class="hljs-keyword">from</span> PIL <span class="hljs-keyword">import</span> Image, GifImagePlugin<br><span class="hljs-keyword">from</span> apng <span class="hljs-keyword">import</span> APNG<br><span class="hljs-keyword">from</span> Crypto.Util.number <span class="hljs-keyword">import</span> long_to_bytes <span class="hljs-keyword">as</span> l2b, bytes_to_long <span class="hljs-keyword">as</span> b2l<br><br>origin = Image.<span class="hljs-built_in">open</span>(<span class="hljs-string">r&quot;ostrich.jpg&quot;</span>)<br>zero_dot = []<br>width, height = origin.size<br><br><span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(width):<br>    <span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(height):<br>        <span class="hljs-keyword">if</span> origin.getpixel((x,y))[<span class="hljs-number">2</span>] == <span class="hljs-number">0</span>:<br>            zero_dot.append((x,y))<br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">38</span>):<br>    current_img = Image.<span class="hljs-built_in">open</span>(<span class="hljs-string">f&quot;./extract/<span class="hljs-subst">&#123;i&#125;</span>.png&quot;</span>)<br>    width, height = current_img.size<br>    image = Image.new(current_img.mode, current_img.size)<br>    pixels = image.load()<br>    change_dot = <span class="hljs-literal">None</span><br>    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(width):<br>        <span class="hljs-keyword">if</span> change_dot <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(height):<br>            pixels[x, y] = current_img.getpixel((x, y))<br>            <span class="hljs-keyword">if</span> pixels[x,y][<span class="hljs-number">2</span>] == <span class="hljs-number">0</span>:<br>                <span class="hljs-keyword">if</span> (x,y) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> zero_dot:<br>                    <span class="hljs-comment"># print(f&quot;&#123;i&#125; :&quot;,(x,y), &quot;is the change point&quot;)</span><br>                    change_dot = (x,y)<br><br>    origin_blue = origin.getpixel(change_dot)[<span class="hljs-number">2</span>]<br><br>    <span class="hljs-comment"># 基本上都会出现两个字节长度</span><br>    value = <span class="hljs-built_in">bytes</span>([current_img.getpixel(change_dot)[<span class="hljs-number">0</span>],current_img.getpixel(change_dot)[<span class="hljs-number">1</span>]])<br>    value = b2l(value)<br><br>    <span class="hljs-built_in">print</span>(<span class="hljs-built_in">chr</span>(value//origin_blue), end=<span class="hljs-string">&quot;&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/writeup/">writeup</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/04/28/hello-world/">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
