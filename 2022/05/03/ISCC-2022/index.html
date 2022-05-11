@@ -16,19 +16,19 @@
   <meta name="author" content="lanpesk">
   <meta name="keywords" content="">
   
-    <meta name="description" content="ISCC 2022 中 单板小将苏翊鸣、 藏在星空中的诗、降维打击与Amy’s Code 的题解">
+    <meta name="description" content="ISCC 2022 中 单板小将苏翊鸣、 藏在星空中的诗、降维打击、2022冬奥会、GetTheTable与Amy’s Code 的题解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ISCC 2022">
 <meta property="og:url" content="http://example.com/2022/05/03/ISCC-2022/index.html">
 <meta property="og:site_name" content="The blog of lanpesk">
-<meta property="og:description" content="ISCC 2022 中 单板小将苏翊鸣、 藏在星空中的诗、降维打击与Amy’s Code 的题解">
+<meta property="og:description" content="ISCC 2022 中 单板小将苏翊鸣、 藏在星空中的诗、降维打击、2022冬奥会、GetTheTable与Amy’s Code 的题解">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2022/05/02/pbCsNHajOFcqfyY.png">
 <meta property="og:image" content="https://s2.loli.net/2022/05/02/sulnctUJ14kD2O5.png">
 <meta property="og:image" content="https://s2.loli.net/2022/05/02/e6OXdwMmx1U58Q9.png">
 <meta property="og:image" content="https://s2.loli.net/2022/05/02/N4TitScG2dek19V.png">
 <meta property="article:published_time" content="2022-05-03T11:02:34.000Z">
-<meta property="article:modified_time" content="2022-05-11T16:09:40.012Z">
+<meta property="article:modified_time" content="2022-05-11T16:36:31.022Z">
 <meta property="article:author" content="lanpesk">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="CTF">
@@ -194,7 +194,7 @@
             <h1 style="display: none">ISCC 2022</h1>
             
             <div class="markdown-body">
-              <p>ISCC 2022 中 单板小将苏翊鸣、 藏在星空中的诗、降维打击与Amy’s Code 的题解</p>
+              <p>ISCC 2022 中 单板小将苏翊鸣、 藏在星空中的诗、降维打击、2022冬奥会、GetTheTable与Amy’s Code 的题解</p>
 <span id="more"></span>
 
 <p>首先说一句牢骚，这个比赛要的信息也太多了。</p>
@@ -266,6 +266,14 @@
 <figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">flag格式：ISCC</span><span class="hljs-template-variable">&#123;xxxx-xxxx-xxxx&#125;</span><br></code></pre></td></tr></table></figure>
 
 <p>作者你这不是坑爹吗。</p>
+<h2 id="2022冬奥会"><a href="#2022冬奥会" class="headerlink" title="2022冬奥会"></a>2022冬奥会</h2><div class="note note-info">
+            <p>于2022-05-11新增</p>
+          </div>
+
+<p>与单板小将苏翊鸣题解一致。修改图片高度。得到信息：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-symbol">&amp;#x51b0;</span><span class="hljs-symbol">&amp;#x58a9;</span><span class="hljs-symbol">&amp;#x58a9;</span><span class="hljs-symbol">&amp;#x7684;</span><span class="hljs-symbol">&amp;#x5c0f;</span><span class="hljs-symbol">&amp;#x4f19;</span><span class="hljs-symbol">&amp;#x4f34;</span><span class="hljs-symbol">&amp;#x7ecf;</span><span class="hljs-symbol">&amp;#x5e38;</span><span class="hljs-symbol">&amp;#x88ab;</span><span class="hljs-symbol">&amp;#x4eba;</span><span class="hljs-symbol">&amp;#x51b7;</span><span class="hljs-symbol">&amp;#x843d;</span><span class="hljs-symbol">&amp;#xff0c;</span><span class="hljs-symbol">&amp;#x4f60;</span><span class="hljs-symbol">&amp;#x77e5;</span><span class="hljs-symbol">&amp;#x9053;</span><span class="hljs-symbol">&amp;#x5b83;</span><span class="hljs-symbol">&amp;#x7684;</span><span class="hljs-symbol">&amp;#x539f;</span><span class="hljs-symbol">&amp;#x578b;</span><span class="hljs-symbol">&amp;#x662f;</span><span class="hljs-symbol">&amp;#x4ec0;</span><span class="hljs-symbol">&amp;#x4e48;</span><span class="hljs-symbol">&amp;#x5417;</span><span class="hljs-symbol">&amp;#xff1f;</span><br></code></pre></td></tr></table></figure>
+
+<p>unicode编码，问的是雪容融的原型是什么。答案是灯笼。</p>
 <h1 id="Reverse"><a href="#Reverse" class="headerlink" title="Reverse"></a>Reverse</h1><h2 id="Amy’s-Code"><a href="#Amy’s-Code" class="headerlink" title="Amy’s Code"></a>Amy’s Code</h2><p>逆向还没入门，所以挑了简单的题练手。哎，没有师傅带自己学是真的进展缓慢。</p>
 <p>文件下载下来，StuPE看一下是32位程序。</p>
 <p>运行一下。</p>
@@ -293,6 +301,16 @@
 <p>首先我们来解出Str是什么。看样子str长度应该要为20。由此得到我们这个函数期望输入的字符串。接下来再反向sub_4128A0函数即可。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># solve.py</span><br><br>v9 = [<br>    <span class="hljs-number">149</span>, <span class="hljs-number">169</span>, <span class="hljs-number">137</span>, <span class="hljs-number">134</span>,<br>    <span class="hljs-number">212</span>, <span class="hljs-number">188</span>, <span class="hljs-number">177</span>, <span class="hljs-number">184</span>,<br>    <span class="hljs-number">177</span>, <span class="hljs-number">197</span>, <span class="hljs-number">192</span>, <span class="hljs-number">179</span>,<br>    <span class="hljs-number">153</span>, <span class="hljs-number">197</span>, <span class="hljs-number">159</span>, <span class="hljs-number">163</span>,<br>    <span class="hljs-number">160</span>, <span class="hljs-number">167</span>, <span class="hljs-number">169</span>, <span class="hljs-number">184</span>,<br>    <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>,<br>    <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>,<br>    <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]<br><br>v6 = <span class="hljs-string">&quot;LWHFUENGDJGEFHYDHIGJ&quot;</span><br><br>inputStr = []<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(v6)):<br>    inputStr.append(v9[i] - <span class="hljs-built_in">ord</span>(v6[i]))<br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(inputStr)):<br>    inputStr[i] ^= i<br><br><span class="hljs-built_in">print</span>([<span class="hljs-built_in">chr</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> inputStr])<br><br><span class="hljs-comment"># ISCC&#123;reverse_pHPHOp&#125;</span><br></code></pre></td></tr></table></figure>
 
+
+
+<h2 id="GetTheTable"><a href="#GetTheTable" class="headerlink" title="GetTheTable"></a>GetTheTable</h2><div class="note note-info">
+            <p>于2022-05-11新增</p>
+          </div>
+
+<p>下载附件IDA打开。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c">n1 = <span class="hljs-number">18</span>;<br>  <span class="hljs-built_in">strcpy</span>(str, <span class="hljs-string">&quot;ERaQux2uV3u5F736EjkECSDVLp&quot;</span>);<br>  <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%s&quot;</span>, plainText);<br>  n = <span class="hljs-built_in">strlen</span>(plainText);<br>  <span class="hljs-keyword">if</span> ( n &lt;= <span class="hljs-number">32</span> )<br>  &#123;<br>    *(_QWORD *)&amp;len[<span class="hljs-number">4</span>] = <span class="hljs-number">0</span>i64;<br>    *(_QWORD *)len = (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>)(<span class="hljs-number">138</span> * <span class="hljs-built_in">strlen</span>(plainText) / <span class="hljs-number">0x64</span>) + <span class="hljs-number">1</span>;<br>    <span class="hljs-built_in">strcpy</span>(str12581, <span class="hljs-string">&quot;123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz&quot;</span>);<br>    encryption = (<span class="hljs-type">char</span> *)<span class="hljs-built_in">malloc</span>(*(<span class="hljs-type">int</span> *)len);<br>    index = <span class="hljs-number">0</span>;<br></code></pre></td></tr></table></figure>
+
+<p>是base58加密。str应该就是我们加密过后的字符串。把字符串拿出来进行base58解密即可得到flag。</p>
 
             </div>
             <hr>
