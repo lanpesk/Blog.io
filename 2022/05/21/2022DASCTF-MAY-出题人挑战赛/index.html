@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/banner/piano_man.png">
+  <link rel="icon" href="/banner/piano_man.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="lanpesk">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="CryptoYusa的密码学课堂——一见如故12345678910111213141516171819202122232425262728293031323334353637383940414243444546class Myrand():	def __init__(self,seed):		self.index &#x3D; 0		self.isInit &#x3D; 1		self.MT &#x3D; [seed] + [">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2022DASCTF MAY 出题人挑战赛">
+<meta property="og:url" content="http://example.com/2022/05/21/2022DASCTF-MAY-%E5%87%BA%E9%A2%98%E4%BA%BA%E6%8C%91%E6%88%98%E8%B5%9B/index.html">
+<meta property="og:site_name" content="The blog of lanpesk">
+<meta property="og:description" content="CryptoYusa的密码学课堂——一见如故12345678910111213141516171819202122232425262728293031323334353637383940414243444546class Myrand():	def __init__(self,seed):		self.index &#x3D; 0		self.isInit &#x3D; 1		self.MT &#x3D; [seed] + [">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-21T10:46:48.000Z">
+<meta property="article:modified_time" content="2022-05-21T10:46:48.915Z">
+<meta property="article:author" content="lanpesk">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="Crypto">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>2022DASCTF MAY 出题人挑战赛 - The blog of lanpesk</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>lanpesk</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://s2.loli.net/2022/05/01/YwbfzI9vkWMaVc2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="2022DASCTF MAY 出题人挑战赛">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-21 18:46" pubdate>
+        2022年5月21日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">2022DASCTF MAY 出题人挑战赛</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h1><h2 id="Yusa的密码学课堂——一见如故"><a href="#Yusa的密码学课堂——一见如故" class="headerlink" title="Yusa的密码学课堂——一见如故"></a>Yusa的密码学课堂——一见如故</h2><figure class="highlight python"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></div></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Myrand</span>():<br>	<span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,seed</span>):<br>		self.index = <span class="hljs-number">0</span><br>		self.isInit = <span class="hljs-number">1</span><br>		self.MT = [seed] + [<span class="hljs-number">0</span>] * <span class="hljs-number">623</span><br><br>		<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">624</span>):<br>			t = <span class="hljs-number">1314433253</span> * (self.MT[i-<span class="hljs-number">1</span>] ^ (self.MT[i-<span class="hljs-number">1</span>] &gt;&gt; <span class="hljs-number">30</span>)) + <span class="hljs-number">1</span><br>			self.MT[i] = t &amp; <span class="hljs-number">0xffffffff</span><br><br><br>	<span class="hljs-keyword">def</span> <span class="hljs-title function_">generate</span>(<span class="hljs-params">self</span>):<br>		<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">624</span>):<br>			y = (self.MT[i] &amp; <span class="hljs-number">0x80000000</span>) + (self.MT[(i+<span class="hljs-number">1</span>)%<span class="hljs-number">624</span>] &amp; <span class="hljs-number">0x7fffffff</span>)<br>			self.MT[i] = self.MT[(i+<span class="hljs-number">397</span>)%<span class="hljs-number">624</span>] ^ (y &gt;&gt; <span class="hljs-number">1</span>)<br>			<span class="hljs-keyword">if</span> y &amp; <span class="hljs-number">1</span>:<br>				self.MT[i] ^= <span class="hljs-number">2567483520</span><br><br>	<span class="hljs-keyword">def</span> <span class="hljs-title function_">rand</span>(<span class="hljs-params">self</span>):<br>		<span class="hljs-keyword">if</span> self.index == <span class="hljs-number">0</span>:<br>			self.generate()<br>		y = self.MT[self.index]<br>		y = y ^ self.cs2l(y, <span class="hljs-number">11</span>) ^ self.cs2l(y,<span class="hljs-number">15</span>)<br>		y = y ^ self.cs2r(y,<span class="hljs-number">7</span>) ^ self.cs2r(y,<span class="hljs-number">19</span>)<br>		self.index = (self.index + <span class="hljs-number">1</span>) % <span class="hljs-number">624</span><br>		<span class="hljs-keyword">return</span> y<br><br>	<span class="hljs-keyword">def</span> <span class="hljs-title function_">cs2l</span>(<span class="hljs-params">self, y, shift</span>):<br>		<span class="hljs-keyword">return</span> ((y &lt;&lt; shift) ^ (y &gt;&gt; (<span class="hljs-number">32</span> - shift))) &amp; <span class="hljs-number">0xffffffff</span><br> <br>	<span class="hljs-keyword">def</span> <span class="hljs-title function_">cs2r</span>(<span class="hljs-params">self, y, shift</span>):<br>		<span class="hljs-keyword">return</span> ((y &gt;&gt; shift) ^ (y &lt;&lt; (<span class="hljs-number">32</span> - shift))) &amp; <span class="hljs-number">0xffffffff</span><br><br><span class="hljs-keyword">import</span> os<br>r = Myrand(<span class="hljs-built_in">int</span>(os.urandom(<span class="hljs-number">4</span>).<span class="hljs-built_in">hex</span>(),<span class="hljs-number">16</span>))<br>out = []<br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">624</span>):<br>	out.append(r.rand())<br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;output.txt&quot;</span>,<span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">as</span> f:<br>	f.write(<span class="hljs-built_in">str</span>(out))<br><br><span class="hljs-keyword">from</span> hashlib <span class="hljs-keyword">import</span> md5<br>flag = <span class="hljs-string">&#x27;DASCTF&#123;&#x27;</span> + md5(<span class="hljs-built_in">str</span>(r.rand()).encode()).hexdigest() + <span class="hljs-string">&#x27;&#125;&#x27;</span><br><span class="hljs-built_in">print</span>(flag)<br></code></pre></td></tr></table></figure>
+
+<p>文件里面是输出的rand数。</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns">[<span class="hljs-number">3417500333</span>, <span class="hljs-number">4091726338</span>, <span class="hljs-number">652603332</span>, <span class="hljs-number">4187304543</span>, <span class="hljs-number">4293795290</span>, <span class="hljs-number">1622245003</span>, <span class="hljs-number">3383443782</span>, <span class="hljs-number">2420250331</span>, <span class="hljs-number">322010852</span>, <span class="hljs-number">1604005753</span>, <span class="hljs-number">3137930218</span>, <span class="hljs-number">1074571824</span>, <span class="hljs-number">1566336258</span>, <span class="hljs-number">2754341076</span>, <span class="hljs-number">1059426660</span>, <span class="hljs-number">2461569360</span>, <span class="hljs-number">613134153</span>, <span class="hljs-number">860561774</span>, <span class="hljs-number">3003069274</span>, <span class="hljs-number">553387944</span>, <span class="hljs-number">1949778231</span>, <span class="hljs-number">249886857</span>, <span class="hljs-number">2322866121</span>, <span class="hljs-number">3685855175</span>, <span class="hljs-number">1977923546</span>, <span class="hljs-number">1887238269</span>, <span class="hljs-number">253812990</span>, <span class="hljs-number">2188417674</span>, <span class="hljs-number">2718707711</span>, <span class="hljs-number">1599975569</span>, <span class="hljs-number">3254935456</span>, <span class="hljs-number">3199641169</span>, <span class="hljs-number">362166522</span>, <span class="hljs-number">1378687155</span>, <span class="hljs-number">912036995</span>, <span class="hljs-number">3174049018</span>, <span class="hljs-number">780042016</span>, <span class="hljs-number">970421905</span>, <span class="hljs-number">3468971406</span>, <span class="hljs-number">801660807</span>, <span class="hljs-number">833926127</span>, <span class="hljs-number">473587885</span>, <span class="hljs-number">158979812</span>, <span class="hljs-number">405306558</span>, <span class="hljs-number">1363084996</span>, <span class="hljs-number">2023076543</span>, <span class="hljs-number">2069797730</span>, <span class="hljs-number">718155249</span>, <span class="hljs-number">1641186127</span>, <span class="hljs-number">3616747747</span>, <span class="hljs-number">1575693921</span>, <span class="hljs-number">3856591855</span>, <span class="hljs-number">223881884</span>, <span class="hljs-number">3002184567</span>, <span class="hljs-number">1666647440</span>, <span class="hljs-number">617661934</span>, <span class="hljs-number">2673101022</span>, <span class="hljs-number">885332395</span>, <span class="hljs-number">3391329168</span>, <span class="hljs-number">1640225363</span>, <span class="hljs-number">2565685644</span>, <span class="hljs-number">3892963352</span>, <span class="hljs-number">3034627488</span>, <span class="hljs-number">2415435183</span>, <span class="hljs-number">3648712566</span>, <span class="hljs-number">2140877952</span>, <span class="hljs-number">1303506086</span>, <span class="hljs-number">2455662362</span>, <span class="hljs-number">1720382700</span>, <span class="hljs-number">3970268445</span>, <span class="hljs-number">2579167586</span>, <span class="hljs-number">4117229324</span>, <span class="hljs-number">846645263</span>, <span class="hljs-number">3252991293</span>, <span class="hljs-number">79067029</span>, <span class="hljs-number">2756800392</span>, <span class="hljs-number">2212447526</span>, <span class="hljs-number">2203329967</span>, <span class="hljs-number">1270408703</span>, <span class="hljs-number">740176928</span>, <span class="hljs-number">3176125705</span>, <span class="hljs-number">166800854</span>, <span class="hljs-number">3327343902</span>, <span class="hljs-number">2079714725</span>, <span class="hljs-number">3702269956</span>, <span class="hljs-number">3659849279</span>, <span class="hljs-number">3658666909</span>, <span class="hljs-number">797535816</span>, <span class="hljs-number">600857570</span>, <span class="hljs-number">553836307</span>, <span class="hljs-number">2394740468</span>, <span class="hljs-number">1178393549</span>, <span class="hljs-number">2183765310</span>, <span class="hljs-number">4014432190</span>, <span class="hljs-number">652246726</span>, <span class="hljs-number">3693235932</span>, <span class="hljs-number">4046942361</span>, <span class="hljs-number">4105444828</span>, <span class="hljs-number">145386213</span>, <span class="hljs-number">1198390220</span>, <span class="hljs-number">3023119098</span>, <span class="hljs-number">663559283</span>, <span class="hljs-number">225958361</span>, <span class="hljs-number">3893000878</span>, <span class="hljs-number">1615631644</span>, <span class="hljs-number">1941951859</span>, <span class="hljs-number">471085675</span>, <span class="hljs-number">2164362049</span>, <span class="hljs-number">4274234562</span>, <span class="hljs-number">4127314557</span>, <span class="hljs-number">1833529303</span>, <span class="hljs-number">17668093</span>, <span class="hljs-number">3208743142</span>, <span class="hljs-number">3210135945</span>, <span class="hljs-number">1772990736</span>, <span class="hljs-number">3290157875</span>, <span class="hljs-number">3006334453</span>, <span class="hljs-number">3831748800</span>, <span class="hljs-number">1120411838</span>, <span class="hljs-number">690279329</span>, <span class="hljs-number">2436940844</span>, <span class="hljs-number">1440602808</span>, <span class="hljs-number">1552272917</span>, <span class="hljs-number">1321728089</span>, <span class="hljs-number">524486126</span>, <span class="hljs-number">3696307959</span>, <span class="hljs-number">1189129368</span>, <span class="hljs-number">28736041</span>, <span class="hljs-number">3143264315</span>, <span class="hljs-number">3050323849</span>, <span class="hljs-number">1458456612</span>, <span class="hljs-number">389869312</span>, <span class="hljs-number">2360130428</span>, <span class="hljs-number">854837117</span>, <span class="hljs-number">1270423403</span>, <span class="hljs-number">3471650414</span>, <span class="hljs-number">243573262</span>, <span class="hljs-number">3449929772</span>, <span class="hljs-number">2436299611</span>, <span class="hljs-number">420972940</span>, <span class="hljs-number">923873821</span>, <span class="hljs-number">3499748829</span>, <span class="hljs-number">2470333529</span>, <span class="hljs-number">3901870125</span>, <span class="hljs-number">3589884387</span>, <span class="hljs-number">3339475693</span>, <span class="hljs-number">1526947412</span>, <span class="hljs-number">1747516667</span>, <span class="hljs-number">2971536797</span>, <span class="hljs-number">273910310</span>, <span class="hljs-number">2185887289</span>, <span class="hljs-number">2723697010</span>, <span class="hljs-number">1973585459</span>, <span class="hljs-number">1166325256</span>, <span class="hljs-number">1360822059</span>, <span class="hljs-number">416514510</span>, <span class="hljs-number">4038763765</span>, <span class="hljs-number">1816380840</span>, <span class="hljs-number">940152644</span>, <span class="hljs-number">3918708431</span>, <span class="hljs-number">3410593321</span>, <span class="hljs-number">3358844522</span>, <span class="hljs-number">3678637784</span>, <span class="hljs-number">2412834780</span>, <span class="hljs-number">3052967117</span>, <span class="hljs-number">3672611162</span>, <span class="hljs-number">570069042</span>, <span class="hljs-number">95771608</span>, <span class="hljs-number">1210821251</span>, <span class="hljs-number">2163778365</span>, <span class="hljs-number">2739972546</span>, <span class="hljs-number">3094346015</span>, <span class="hljs-number">749719666</span>, <span class="hljs-number">1697477587</span>, <span class="hljs-number">986142486</span>, <span class="hljs-number">2591897292</span>, <span class="hljs-number">1234948693</span>, <span class="hljs-number">3659791160</span>, <span class="hljs-number">3990257960</span>, <span class="hljs-number">501199958</span>, <span class="hljs-number">3029961497</span>, <span class="hljs-number">578415668</span>, <span class="hljs-number">124517322</span>, <span class="hljs-number">1985205894</span>, <span class="hljs-number">3777347400</span>, <span class="hljs-number">1149995545</span>, <span class="hljs-number">290699775</span>, <span class="hljs-number">3399696193</span>, <span class="hljs-number">1062094395</span>, <span class="hljs-number">2896523484</span>, <span class="hljs-number">1562688856</span>, <span class="hljs-number">992098141</span>, <span class="hljs-number">3941170280</span>, <span class="hljs-number">262596967</span>, <span class="hljs-number">2585751001</span>, <span class="hljs-number">3682611205</span>, <span class="hljs-number">530523926</span>, <span class="hljs-number">1202322766</span>, <span class="hljs-number">3777439514</span>, <span class="hljs-number">3051700271</span>, <span class="hljs-number">261632458</span>, <span class="hljs-number">2736123960</span>, <span class="hljs-number">2786338595</span>, <span class="hljs-number">86310784</span>, <span class="hljs-number">2760191516</span>, <span class="hljs-number">1344514731</span>, <span class="hljs-number">350767781</span>, <span class="hljs-number">2858876127</span>, <span class="hljs-number">519088864</span>, <span class="hljs-number">3193340756</span>, <span class="hljs-number">3563489312</span>, <span class="hljs-number">3239917298</span>, <span class="hljs-number">161418824</span>, <span class="hljs-number">470724403</span>, <span class="hljs-number">3310407387</span>, <span class="hljs-number">1743713887</span>, <span class="hljs-number">3064036770</span>, <span class="hljs-number">1175434157</span>, <span class="hljs-number">3029464330</span>, <span class="hljs-number">116086349</span>, <span class="hljs-number">1652489862</span>, <span class="hljs-number">1176236897</span>, <span class="hljs-number">4139800383</span>, <span class="hljs-number">3758499033</span>, <span class="hljs-number">2961626313</span>, <span class="hljs-number">3064683859</span>, <span class="hljs-number">958478146</span>, <span class="hljs-number">596650527</span>, <span class="hljs-number">1000277312</span>, <span class="hljs-number">4102368994</span>, <span class="hljs-number">1480011430</span>, <span class="hljs-number">4001401502</span>, <span class="hljs-number">4004287177</span>, <span class="hljs-number">3202905309</span>, <span class="hljs-number">1754655955</span>, <span class="hljs-number">2064262245</span>, <span class="hljs-number">1840530874</span>, <span class="hljs-number">2284428117</span>, <span class="hljs-number">2281854453</span>, <span class="hljs-number">1023839768</span>, <span class="hljs-number">2166517711</span>, <span class="hljs-number">2709857675</span>, <span class="hljs-number">2005014414</span>, <span class="hljs-number">4161461001</span>, <span class="hljs-number">2932436148</span>, <span class="hljs-number">2411599350</span>, <span class="hljs-number">4267437788</span>, <span class="hljs-number">2132764972</span>, <span class="hljs-number">150665266</span>, <span class="hljs-number">286170947</span>, <span class="hljs-number">2249288787</span>, <span class="hljs-number">3953585886</span>, <span class="hljs-number">1231725143</span>, <span class="hljs-number">2479045931</span>, <span class="hljs-number">2377059462</span>, <span class="hljs-number">281316188</span>, <span class="hljs-number">379113422</span>, <span class="hljs-number">920019004</span>, <span class="hljs-number">163289886</span>, <span class="hljs-number">2210874762</span>, <span class="hljs-number">1578529538</span>, <span class="hljs-number">309521495</span>, <span class="hljs-number">3737017316</span>, <span class="hljs-number">88919917</span>, <span class="hljs-number">559742618</span>, <span class="hljs-number">978230553</span>, <span class="hljs-number">2154491496</span>, <span class="hljs-number">994913727</span>, <span class="hljs-number">498894258</span>, <span class="hljs-number">1355546448</span>, <span class="hljs-number">4023836881</span>, <span class="hljs-number">3014313787</span>, <span class="hljs-number">164044564</span>, <span class="hljs-number">2408825840</span>, <span class="hljs-number">2029992558</span>, <span class="hljs-number">3707778216</span>, <span class="hljs-number">86206872</span>, <span class="hljs-number">3576935874</span>, <span class="hljs-number">185356787</span>, <span class="hljs-number">1774175910</span>, <span class="hljs-number">3145237900</span>, <span class="hljs-number">3497547609</span>, <span class="hljs-number">841914878</span>, <span class="hljs-number">3425254534</span>, <span class="hljs-number">4264030778</span>, <span class="hljs-number">2348022032</span>, <span class="hljs-number">178331591</span>, <span class="hljs-number">943923822</span>, <span class="hljs-number">3384367749</span>, <span class="hljs-number">2806712599</span>, <span class="hljs-number">1178535099</span>, <span class="hljs-number">1251085540</span>, <span class="hljs-number">2410015803</span>, <span class="hljs-number">1480595408</span>, <span class="hljs-number">2732607876</span>, <span class="hljs-number">1579706357</span>, <span class="hljs-number">870791724</span>, <span class="hljs-number">2320512780</span>, <span class="hljs-number">2149666862</span>, <span class="hljs-number">3797999384</span>, <span class="hljs-number">3905363134</span>, <span class="hljs-number">3388169321</span>, <span class="hljs-number">851973359</span>, <span class="hljs-number">1418716205</span>, <span class="hljs-number">207581030</span>, <span class="hljs-number">1740441523</span>, <span class="hljs-number">1173839013</span>, <span class="hljs-number">4280610104</span>, <span class="hljs-number">1769134281</span>, <span class="hljs-number">1758916333</span>, <span class="hljs-number">4061069248</span>, <span class="hljs-number">2147554262</span>, <span class="hljs-number">2749007447</span>, <span class="hljs-number">909878569</span>, <span class="hljs-number">2054562584</span>, <span class="hljs-number">1515003000</span>, <span class="hljs-number">560286390</span>, <span class="hljs-number">2482663802</span>, <span class="hljs-number">2690882951</span>, <span class="hljs-number">3298162668</span>, <span class="hljs-number">2561737261</span>, <span class="hljs-number">167825221</span>, <span class="hljs-number">507375343</span>, <span class="hljs-number">2179952491</span>, <span class="hljs-number">795452860</span>, <span class="hljs-number">2877704207</span>, <span class="hljs-number">3243106071</span>, <span class="hljs-number">1633372043</span>, <span class="hljs-number">2152178033</span>, <span class="hljs-number">2993246714</span>, <span class="hljs-number">4176238981</span>, <span class="hljs-number">3828458887</span>, <span class="hljs-number">695369535</span>, <span class="hljs-number">2514762808</span>, <span class="hljs-number">2251430819</span>, <span class="hljs-number">2743651063</span>, <span class="hljs-number">783239046</span>, <span class="hljs-number">4036497041</span>, <span class="hljs-number">2175424426</span>, <span class="hljs-number">765021321</span>, <span class="hljs-number">897227922</span>, <span class="hljs-number">3192938155</span>, <span class="hljs-number">4173350810</span>, <span class="hljs-number">2290496185</span>, <span class="hljs-number">4215986056</span>, <span class="hljs-number">2448481441</span>, <span class="hljs-number">3114984799</span>, <span class="hljs-number">2920066349</span>, <span class="hljs-number">722868808</span>, <span class="hljs-number">594363801</span>, <span class="hljs-number">4012575088</span>, <span class="hljs-number">454547939</span>, <span class="hljs-number">3331771662</span>, <span class="hljs-number">1267229957</span>, <span class="hljs-number">3170277692</span>, <span class="hljs-number">2446344734</span>, <span class="hljs-number">3730529788</span>, <span class="hljs-number">2621611481</span>, <span class="hljs-number">2972284304</span>, <span class="hljs-number">2580290241</span>, <span class="hljs-number">486727007</span>, <span class="hljs-number">2727955445</span>, <span class="hljs-number">1457071884</span>, <span class="hljs-number">1053028185</span>, <span class="hljs-number">462301682</span>, <span class="hljs-number">3907840756</span>, <span class="hljs-number">1832398102</span>, <span class="hljs-number">3144685297</span>, <span class="hljs-number">3403964915</span>, <span class="hljs-number">4263570498</span>, <span class="hljs-number">792776003</span>, <span class="hljs-number">306771255</span>, <span class="hljs-number">1633688240</span>, <span class="hljs-number">2159479271</span>, <span class="hljs-number">942060576</span>, <span class="hljs-number">1311531808</span>, <span class="hljs-number">3145754189</span>, <span class="hljs-number">4142271069</span>, <span class="hljs-number">2844524541</span>, <span class="hljs-number">4082439147</span>, <span class="hljs-number">2847276716</span>, <span class="hljs-number">1374436698</span>, <span class="hljs-number">2601522390</span>, <span class="hljs-number">529644524</span>, <span class="hljs-number">206090172</span>, <span class="hljs-number">3015114937</span>, <span class="hljs-number">4137169373</span>, <span class="hljs-number">2600331537</span>, <span class="hljs-number">344659140</span>, <span class="hljs-number">155319271</span>, <span class="hljs-number">1724932164</span>, <span class="hljs-number">3187877676</span>, <span class="hljs-number">4020168431</span>, <span class="hljs-number">711431575</span>, <span class="hljs-number">4123955169</span>, <span class="hljs-number">2539963709</span>, <span class="hljs-number">2764832709</span>, <span class="hljs-number">3897838285</span>, <span class="hljs-number">2521203644</span>, <span class="hljs-number">2059212822</span>, <span class="hljs-number">1129046005</span>, <span class="hljs-number">3277260664</span>, <span class="hljs-number">2739869189</span>, <span class="hljs-number">1955591901</span>, <span class="hljs-number">2661672178</span>, <span class="hljs-number">2926355273</span>, <span class="hljs-number">28176978</span>, <span class="hljs-number">706409211</span>, <span class="hljs-number">1432061304</span>, <span class="hljs-number">26517996</span>, <span class="hljs-number">3180196905</span>, <span class="hljs-number">2178525849</span>, <span class="hljs-number">607854674</span>, <span class="hljs-number">3953350517</span>, <span class="hljs-number">3532394548</span>, <span class="hljs-number">4175940932</span>, <span class="hljs-number">626671309</span>, <span class="hljs-number">1273934270</span>, <span class="hljs-number">3481828801</span>, <span class="hljs-number">22643989</span>, <span class="hljs-number">2104739013</span>, <span class="hljs-number">4183577772</span>, <span class="hljs-number">3932721637</span>, <span class="hljs-number">3075788222</span>, <span class="hljs-number">2814353001</span>, <span class="hljs-number">4120869721</span>, <span class="hljs-number">2045506903</span>, <span class="hljs-number">603494333</span>, <span class="hljs-number">335162960</span>, <span class="hljs-number">2069261279</span>, <span class="hljs-number">2278614835</span>, <span class="hljs-number">210140447</span>, <span class="hljs-number">2012566692</span>, <span class="hljs-number">2345710126</span>, <span class="hljs-number">70390387</span>, <span class="hljs-number">457247932</span>, <span class="hljs-number">2764651800</span>, <span class="hljs-number">652766919</span>, <span class="hljs-number">555253440</span>, <span class="hljs-number">864036913</span>, <span class="hljs-number">1720142260</span>, <span class="hljs-number">453262569</span>, <span class="hljs-number">1113437101</span>, <span class="hljs-number">2576419688</span>, <span class="hljs-number">144008475</span>, <span class="hljs-number">1786881829</span>, <span class="hljs-number">2455128823</span>, <span class="hljs-number">2884922345</span>, <span class="hljs-number">4251332234</span>, <span class="hljs-number">58949785</span>, <span class="hljs-number">4206002785</span>, <span class="hljs-number">3374754553</span>, <span class="hljs-number">2976162198</span>, <span class="hljs-number">546450687</span>, <span class="hljs-number">1268444784</span>, <span class="hljs-number">4132330381</span>, <span class="hljs-number">3404894280</span>, <span class="hljs-number">2421962142</span>, <span class="hljs-number">212361299</span>, <span class="hljs-number">2526283704</span>, <span class="hljs-number">1656118437</span>, <span class="hljs-number">1249336298</span>, <span class="hljs-number">305885855</span>, <span class="hljs-number">1090758249</span>, <span class="hljs-number">3752057640</span>, <span class="hljs-number">3508190692</span>, <span class="hljs-number">3637428</span>, <span class="hljs-number">105102422</span>, <span class="hljs-number">2247418237</span>, <span class="hljs-number">1873609555</span>, <span class="hljs-number">1206760240</span>, <span class="hljs-number">3761689119</span>, <span class="hljs-number">3151616638</span>, <span class="hljs-number">1711308858</span>, <span class="hljs-number">1261541178</span>, <span class="hljs-number">1843103377</span>, <span class="hljs-number">3158893523</span>, <span class="hljs-number">1226253110</span>, <span class="hljs-number">3337577909</span>, <span class="hljs-number">126612372</span>, <span class="hljs-number">2239219657</span>, <span class="hljs-number">1415387229</span>, <span class="hljs-number">3657507305</span>, <span class="hljs-number">3330696118</span>, <span class="hljs-number">2304219467</span>, <span class="hljs-number">3782535397</span>, <span class="hljs-number">2523926865</span>, <span class="hljs-number">173770442</span>, <span class="hljs-number">469421316</span>, <span class="hljs-number">4068724979</span>, <span class="hljs-number">567442650</span>, <span class="hljs-number">1996215573</span>, <span class="hljs-number">2071307093</span>, <span class="hljs-number">778899724</span>, <span class="hljs-number">3534102235</span>, <span class="hljs-number">1001138889</span>, <span class="hljs-number">2821812427</span>, <span class="hljs-number">591691317</span>, <span class="hljs-number">1265763678</span>, <span class="hljs-number">2241915660</span>, <span class="hljs-number">3220601768</span>, <span class="hljs-number">653090205</span>, <span class="hljs-number">2367897867</span>, <span class="hljs-number">1393909319</span>, <span class="hljs-number">2691817329</span>, <span class="hljs-number">3098049768</span>, <span class="hljs-number">117121403</span>, <span class="hljs-number">1255294678</span>, <span class="hljs-number">2272844919</span>, <span class="hljs-number">788255921</span>, <span class="hljs-number">2333869622</span>, <span class="hljs-number">4052660679</span>, <span class="hljs-number">2407095869</span>, <span class="hljs-number">2636108242</span>, <span class="hljs-number">2204717619</span>, <span class="hljs-number">1672726444</span>, <span class="hljs-number">2250826426</span>, <span class="hljs-number">258706466</span>, <span class="hljs-number">2295454699</span>, <span class="hljs-number">337308034</span>, <span class="hljs-number">3703973770</span>, <span class="hljs-number">3133498524</span>, <span class="hljs-number">22718827</span>, <span class="hljs-number">3096937679</span>, <span class="hljs-number">2039003308</span>, <span class="hljs-number">1519854757</span>, <span class="hljs-number">568184976</span>, <span class="hljs-number">1986854118</span>, <span class="hljs-number">2888207511</span>, <span class="hljs-number">822307630</span>, <span class="hljs-number">3829301724</span>, <span class="hljs-number">3198527490</span>, <span class="hljs-number">3073739663</span>, <span class="hljs-number">3043580445</span>, <span class="hljs-number">3458239370</span>, <span class="hljs-number">802145890</span>, <span class="hljs-number">376901460</span>, <span class="hljs-number">1251103099</span>, <span class="hljs-number">1143003993</span>, <span class="hljs-number">1280321148</span>, <span class="hljs-number">661386076</span>, <span class="hljs-number">3708710489</span>, <span class="hljs-number">2237151715</span>, <span class="hljs-number">3928104641</span>, <span class="hljs-number">2975550516</span>, <span class="hljs-number">1087492088</span>, <span class="hljs-number">1504028830</span>, <span class="hljs-number">61927086</span>, <span class="hljs-number">3858242888</span>, <span class="hljs-number">1916136658</span>, <span class="hljs-number">2328550074</span>, <span class="hljs-number">3032032377</span>, <span class="hljs-number">2193802260</span>, <span class="hljs-number">3311627503</span>, <span class="hljs-number">3196945045</span>, <span class="hljs-number">3396801792</span>, <span class="hljs-number">806210594</span>, <span class="hljs-number">2449941623</span>, <span class="hljs-number">2514744466</span>, <span class="hljs-number">3922130206</span>, <span class="hljs-number">3245757763</span>, <span class="hljs-number">3128328446</span>, <span class="hljs-number">2335833206</span>, <span class="hljs-number">3205660364</span>, <span class="hljs-number">3527402441</span>, <span class="hljs-number">2174241644</span>, <span class="hljs-number">1262568556</span>, <span class="hljs-number">2360103007</span>, <span class="hljs-number">2490217737</span>, <span class="hljs-number">1485100950</span>, <span class="hljs-number">3407260</span>, <span class="hljs-number">3005226942</span>, <span class="hljs-number">1355314866</span>, <span class="hljs-number">3154763465</span>, <span class="hljs-number">619881867</span>, <span class="hljs-number">2409963438</span>, <span class="hljs-number">2422269402</span>, <span class="hljs-number">205756019</span>, <span class="hljs-number">3300644241</span>, <span class="hljs-number">1157501775</span>, <span class="hljs-number">1229058028</span>, <span class="hljs-number">161050869</span>, <span class="hljs-number">969496287</span>, <span class="hljs-number">3385825249</span>, <span class="hljs-number">2557284067</span>, <span class="hljs-number">4236642714</span>, <span class="hljs-number">169094727</span>, <span class="hljs-number">2698326774</span>, <span class="hljs-number">1863176242</span>, <span class="hljs-number">3532885426</span>, <span class="hljs-number">3046403588</span>, <span class="hljs-number">3869207867</span>, <span class="hljs-number">496104150</span>, <span class="hljs-number">353604631</span>, <span class="hljs-number">1054882225</span>, <span class="hljs-number">152711981</span>, <span class="hljs-number">1362131890</span>, <span class="hljs-number">76912113</span>, <span class="hljs-number">3052177189</span>, <span class="hljs-number">3932252092</span>, <span class="hljs-number">3834713905</span>, <span class="hljs-number">2338378436</span>, <span class="hljs-number">44417325</span>, <span class="hljs-number">117723195</span>, <span class="hljs-number">1089433566</span>, <span class="hljs-number">4166617161</span>, <span class="hljs-number">2848021308</span>, <span class="hljs-number">2229619096</span>, <span class="hljs-number">319957702</span>, <span class="hljs-number">3661655667</span>, <span class="hljs-number">2809620731</span>, <span class="hljs-number">482011930</span>, <span class="hljs-number">3983483016</span>, <span class="hljs-number">82362287</span>, <span class="hljs-number">1518135562</span>, <span class="hljs-number">3490996143</span>, <span class="hljs-number">510129461</span>, <span class="hljs-number">1400609584</span>, <span class="hljs-number">2646113779</span>, <span class="hljs-number">732457215</span>, <span class="hljs-number">3735585198</span>, <span class="hljs-number">3451194227</span>, <span class="hljs-number">959269510</span>, <span class="hljs-number">244188667</span>]<br></code></pre></td></tr></table></figure>
+
+<p>这里我也给出来吧，这样你们要是想做也能做了。</p>
+<p>分析一下流程，我们最终实要得到这个<code>r.rand()</code>的值，我们才能得到flag。那么看一看rand是怎么运作的。</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rand</span>(<span class="hljs-params">self</span>):<br>	<span class="hljs-keyword">if</span> self.index == <span class="hljs-number">0</span>:<br>		self.generate()<br>	y = self.MT[self.index]<br>	y = y ^ self.cs2l(y, <span class="hljs-number">11</span>) ^ self.cs2l(y,<span class="hljs-number">15</span>)<br>	y = y ^ self.cs2r(y,<span class="hljs-number">7</span>) ^ self.cs2r(y,<span class="hljs-number">19</span>)<br>	self.index = (self.index + <span class="hljs-number">1</span>) % <span class="hljs-number">624</span><br>	<span class="hljs-keyword">return</span> y<br></code></pre></td></tr></table></figure>
+
+<p>可以看到，当index为0的时候，会将MT重新生成。</p>
+<p>产生rand的时候，使用当前的index作为索引，使用MT[index]为基值进行变换最后得到我们的rand，同时index增长1。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> os<br>r = Myrand(<span class="hljs-built_in">int</span>(os.urandom(<span class="hljs-number">4</span>).<span class="hljs-built_in">hex</span>(),<span class="hljs-number">16</span>))<br>out = []<br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">624</span>):<br>	out.append(r.rand())<br></code></pre></td></tr></table></figure>
+
+<p>在主流程的时里面，这里我们生成了624个rand。那么我们生成flag的时候，index的值是0。所以我们在生成flag的时候，MT表会先进行重新的生成。那么我们想要得到flag就得先得到对应的MT表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">y = self.MT[self.index]<br>y = y ^ self.cs2l(y, <span class="hljs-number">11</span>) ^ self.cs2l(y,<span class="hljs-number">15</span>)<br>y = y ^ self.cs2r(y,<span class="hljs-number">7</span>) ^ self.cs2r(y,<span class="hljs-number">19</span>)<br></code></pre></td></tr></table></figure>
+
+<p>这里可以看到，我们的y是一种循环位移异或的生成方式，而且一共有3项，是奇数项。所以这个过程是可逆的可以计算的。具体的算法可以参照一下链接:</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Tf1shC4T/p/15927062.html">https://www.cnblogs.com/Tf1shC4T/p/15927062.html</a></p>
+<p>那么我们就可以得到对应的MT表。然后对这个表进行重新生成，取第一个数进行随机数生成即可得到对应的flag。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># solve.py </span><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">r&quot;output.txt&quot;</span>) <span class="hljs-keyword">as</span> fp:<br>    data = <span class="hljs-built_in">eval</span>(fp.read())<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">cs2l</span>(<span class="hljs-params">y, shift</span>):<br>    shift %= <span class="hljs-number">32</span><br>    <span class="hljs-keyword">return</span> ((y &lt;&lt; shift) ^ (y &gt;&gt; (<span class="hljs-number">32</span> - shift))) &amp; <span class="hljs-number">0xffffffff</span><br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">cs2r</span>(<span class="hljs-params">y, shift</span>):<br>    shift %= <span class="hljs-number">32</span><br>    <span class="hljs-keyword">return</span> ((y &gt;&gt; shift) ^ (y &lt;&lt; (<span class="hljs-number">32</span> - shift))) &amp; <span class="hljs-number">0xffffffff</span><br><br><br>key_right = [<span class="hljs-number">7</span>, <span class="hljs-number">19</span>]<br>key_left = [<span class="hljs-number">11</span>, <span class="hljs-number">15</span>]<br><br><br><span class="hljs-comment"># 破解右移</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">decrypted_first</span>(<span class="hljs-params">y, key</span>):<br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">32</span>):<br>        y = y ^ cs2r(y, key[<span class="hljs-number">0</span>]) ^ cs2r(y, key[<span class="hljs-number">1</span>])<br>        key = [k &lt;&lt; <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> key]<br>    <span class="hljs-keyword">return</span> y<br><br><br><span class="hljs-comment"># 破解左移</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">decrypted_second</span>(<span class="hljs-params">y, key</span>):<br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">32</span>):<br>        y = y ^ cs2l(y, key[<span class="hljs-number">0</span>]) ^ cs2l(y, key[<span class="hljs-number">1</span>])<br>        key = [k &lt;&lt; <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> key]<br>    <span class="hljs-keyword">return</span> y<br><br><br>MT = []<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">generate</span>():<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">624</span>):<br>        y = (MT[i] &amp; <span class="hljs-number">0x80000000</span>) + (MT[(i + <span class="hljs-number">1</span>) % <span class="hljs-number">624</span>] &amp; <span class="hljs-number">0x7fffffff</span>)<br>        MT[i] = MT[(i + <span class="hljs-number">397</span>) % <span class="hljs-number">624</span>] ^ (y &gt;&gt; <span class="hljs-number">1</span>)<br>        <span class="hljs-keyword">if</span> y &amp; <span class="hljs-number">1</span>:<br>            MT[i] ^= <span class="hljs-number">2567483520</span><br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">rand</span>(<span class="hljs-params">index=<span class="hljs-number">0</span></span>):<br>    <span class="hljs-keyword">if</span> index == <span class="hljs-number">0</span>:<br>        generate()<br>    y = MT[index]<br>    y = y ^ cs2l(y, <span class="hljs-number">11</span>) ^ cs2l(y, <span class="hljs-number">15</span>)<br>    y = y ^ cs2r(y, <span class="hljs-number">7</span>) ^ cs2r(y, <span class="hljs-number">19</span>)<br>    index = (index + <span class="hljs-number">1</span>) % <span class="hljs-number">624</span><br>    <span class="hljs-keyword">return</span> y<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    MT = []<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> data:<br>        MT.append(decrypted_second(decrypted_first(i, key_right), key_left))<br>    <span class="hljs-keyword">from</span> hashlib <span class="hljs-keyword">import</span> md5<br><br>    flag = <span class="hljs-string">&#x27;DASCTF&#123;&#x27;</span> + md5(<span class="hljs-built_in">str</span>(rand()).encode()).hexdigest() + <span class="hljs-string">&#x27;&#125;&#x27;</span><br>    <span class="hljs-built_in">print</span>(flag)<br><br><span class="hljs-comment"># DASCTF&#123;49e225e5b1b57a1d3c9803b5ddfd38f9&#125;</span><br><br></code></pre></td></tr></table></figure>
+
+<p>这里对这个解密多将两句吧。</p>
+<p>这个其实可以使用左移右移混杂的，只是这一题不行。</p>
+<p>这个方法的使用条件是右边异或的项数必须是奇数个，而且第一项是没有位移的。</p>
+<p>例如下面这种情况：<br>$$<br>y = x \oplus (x \ggg p) \oplus (x \lll q)<br>$$<br>那么对应的解密代码就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">decrypted</span>(<span class="hljs-params">y, key</span>):<br>	<span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(bitslen): <span class="hljs-comment"># bitslen表示你进行运算的位宽度，这道题里面就是32位</span><br>		y = y ^ cs2r(y, p) ^ cs2l(y, q)<br>		key = [k &lt;&lt; <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> key]<br>	<span class="hljs-keyword">return</span> y<br></code></pre></td></tr></table></figure>
+
+<p>提供对应的p,q也是可以解的。</p>
+<h1 id="一些题外话"><a href="#一些题外话" class="headerlink" title="一些题外话"></a>一些题外话</h1><p>好多题目都找不到writeup，每次打完一些比赛，想看看别人是怎么写出来那些我没写出来的题，但是基本上都找不到对应的Writeup。官方writeup也基本上没有。哎，也不认识那些大佬，想要题解都要不到。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/CTF/">CTF</a>
+                    
+                      <a class="hover-with-bg" href="/tags/writeup/">writeup</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Crypto/">Crypto</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/04/%E7%89%A9%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8OpenEuler%E7%B3%BB%E7%BB%9FDHCP%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+                        <span class="hidden-mobile">物理服务器OpenEuler系统DHCP网络环境配置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
