@@ -1,0 +1,575 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/banner/piano_man.png">
+  <link rel="icon" href="/banner/piano_man.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="lanpesk">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ISCC 2022 中 单板小将苏翊鸣、 藏在星空中的诗、降维打击、2022冬奥会、真相只有一个、GetTheTable与Amy’s Code 的题解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ISCC 2022">
+<meta property="og:url" content="http://example.com/2022/05/03/ISCC-2022/index.html">
+<meta property="og:site_name" content="lanpesk">
+<meta property="og:description" content="ISCC 2022 中 单板小将苏翊鸣、 藏在星空中的诗、降维打击、2022冬奥会、真相只有一个、GetTheTable与Amy’s Code 的题解">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/05/02/pbCsNHajOFcqfyY.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/02/sulnctUJ14kD2O5.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/02/e6OXdwMmx1U58Q9.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/02/N4TitScG2dek19V.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/12/qKaNGjLQhrtc1Ck.jpg">
+<meta property="article:published_time" content="2022-05-03T11:02:34.000Z">
+<meta property="article:modified_time" content="2022-05-25T13:56:21.205Z">
+<meta property="article:author" content="lanpesk">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="MISC">
+<meta property="article:tag" content="Reverse">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2022/05/02/pbCsNHajOFcqfyY.png">
+  
+  
+  <title>ISCC 2022 - lanpesk</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>lanpesk</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://s2.loli.net/2022/05/01/YwbfzI9vkWMaVc2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="ISCC 2022">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-03 19:02" pubdate>
+        2022年5月3日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ISCC 2022</h1>
+            
+            <div class="markdown-body">
+              <p>ISCC 2022 中 单板小将苏翊鸣、 藏在星空中的诗、降维打击、2022冬奥会、真相只有一个、GetTheTable与Amy’s Code 的题解</p>
+<span id="more"></span>
+<p>时间挺长的，但是没啥时间来玩。话说为什么没有Crypto方向的</p>
+<h1 id="misc"><a class="markdownIt-Anchor" href="#misc"></a> Misc</h1>
+<h2 id="单板小将苏翊鸣"><a class="markdownIt-Anchor" href="#单板小将苏翊鸣"></a> 单板小将苏翊鸣</h2>
+<p>下载附件后打开，是一张图片和一个压缩包。压缩包加密了，很明显密码应该在图片里。</p>
+<p>图片属性和压缩包注释里面都没有有用的信息。用binwalk和foremost也没有分出来东西。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">Ih</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDDf</span>�<span class="hljs-selector-tag">t</span>‘€]<span class="hljs-selector-tag">DDDDDDd</span> <span class="hljs-selector-tag">A</span>™<span class="hljs-selector-tag">h</span>Ð<span class="hljs-selector-tag">EDDDDDD</span>þä<span class="hljs-selector-tag">t</span>:ÿ<span class="hljs-selector-tag">q</span>˜<span class="hljs-number">9</span>ñïÕ����<span class="hljs-selector-tag">IEND</span>®<span class="hljs-selector-tag">B</span>`‚<br></code></pre></td></tr></table></figure>
+<p>用二进制查看器看看里面的内容，发现尾部有一些数据有点规律。而且这个数据是在图片的结束符之前的。所以可以看出来图像藏了东西，把图像的高改大一点就行。</p>
+<p>改完之后图像出现了一个二维码。扫描。</p>
+<p>得到内容：</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs clojure"><span class="hljs-character">\u5728</span><span class="hljs-character">\u8fd9</span><span class="hljs-character">\u6b21</span><span class="hljs-character">\u51ac</span><span class="hljs-character">\u5965</span><span class="hljs-character">\u4f1a</span><span class="hljs-character">\u7684</span><span class="hljs-character">\u821e</span><span class="hljs-character">\u53f0</span><span class="hljs-character">\u4e0a</span><span class="hljs-character">\uff0c</span><span class="hljs-character">\u6211</span><span class="hljs-character">\u56fd</span><span class="hljs-character">\u5c0f</span><span class="hljs-character">\u5c06</span><span class="hljs-character">\u82cf</span><span class="hljs-character">\u7fca</span><span class="hljs-character">\u9e23</span><span class="hljs-character">\u65a9</span><span class="hljs-character">\u83b7</span><span class="hljs-character">\u4e00</span><span class="hljs-character">\u91d1</span><span class="hljs-character">\u4e00</span><span class="hljs-character">\u94f6</span><span class="hljs-character">\uff0c</span><span class="hljs-character">\u90a3</span><span class="hljs-character">\u4f60</span><span class="hljs-character">\u77e5</span><span class="hljs-character">\u9053</span><span class="hljs-character">\u6b64</span><span class="hljs-character">\u6b21</span><span class="hljs-character">\u51ac</span><span class="hljs-character">\u5965</span><span class="hljs-character">\u4f1a</span><span class="hljs-character">\u6211</span><span class="hljs-character">\u56fd</span><span class="hljs-character">\u603b</span><span class="hljs-character">\u5171</span><span class="hljs-character">\u83b7</span><span class="hljs-character">\u5f97</span><span class="hljs-character">\u51e0</span><span class="hljs-character">\u679a</span><span class="hljs-character">\u5956</span><span class="hljs-character">\u724c</span><span class="hljs-character">\u5417</span><span class="hljs-character">\uff1f</span><span class="hljs-character">\u53c8</span><span class="hljs-character">\u5206</span><span class="hljs-character">\u522b</span><span class="hljs-character">\u662f</span><span class="hljs-character">\u51e0</span><span class="hljs-character">\u91d1</span><span class="hljs-character">\u51e0</span><span class="hljs-character">\u94f6</span><span class="hljs-character">\u51e0</span><span class="hljs-character">\u94dc</span><span class="hljs-character">\u5462</span><span class="hljs-character">\uff1f</span><br></code></pre></td></tr></table></figure>
+<p>这是unicode编码。转换一下得到：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">在这次冬奥会的舞台上，我国小将苏翊鸣斩获一金一银，那你知道此次冬奥会我国总共获得几枚奖牌吗？又分别是几金几银几铜呢？<br></code></pre></td></tr></table></figure>
+<p>百度一下奥运奖牌榜。按照顺序进行组合。即可得到压缩包的密码。解压即可得到flag。</p>
+<h2 id="藏在星空中的诗"><a class="markdownIt-Anchor" href="#藏在星空中的诗"></a> 藏在星空中的诗</h2>
+<p>下载附件。得到三个文件。一个psd文件。一个压缩包。一个文本文件。文本文件内容如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs">1：☆✪٭☪✲<br>2：✡🟇⍟⍟✸<br>3：🌠⍟🌟✡🟉<br>4：🟃🟀✪🟀⚝<br>5：✪🟔⍣☆🞱<br></code></pre></td></tr></table></figure>
+<p>emmm… 全是特殊字符。压缩包带密码了，我们需要找到压缩包的密码是多少。</p>
+<p>打开psd文件。发现里面有两个图层。第一个图层不透明度为5%。调整到100%。发现了一个五角星。表示的顺序为：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>-&gt; <span class="hljs-number">3</span> -&gt; <span class="hljs-number">5</span> -&gt; <span class="hljs-number">2</span> -&gt; <span class="hljs-number">4</span> -&gt; <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p>构成一个五角星。这里一开始以为最后还要回到1，后来发现不用。</p>
+<p>压缩包的密码就是文本文件中的那几行标号按照提示的顺序组合。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">☆✪٭☪✲🌠⍟🌟✡🟉✪🟔⍣☆🞱✡🟇⍟⍟✸🟃🟀✪🟀⚝<br></code></pre></td></tr></table></figure>
+<p>解压后得到一个Excel文件。</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs subunit">A	٭	 U<span class="hljs-string">+066</span>D<br>B	≛	U<span class="hljs-string">+225</span>B<br>C	⍟	U<span class="hljs-string">+235</span>F<br>D	⍣	U<span class="hljs-string">+2363</span><br>E	★	U<span class="hljs-string">+2605</span><br>F	☆	U<span class="hljs-string">+2606</span><br>G	☪	U<span class="hljs-string">+262</span>A<br>H	⚝	U<span class="hljs-string">+269</span>D<br>I	✡	U<span class="hljs-string">+2721</span><br>J	✦	U<span class="hljs-string">+2726</span><br>K	✧	U<span class="hljs-string">+2727</span><br>L	✪	U<span class="hljs-string">+272</span>A<br>M	✫	U<span class="hljs-string">+272</span>B<br>N	✮	U<span class="hljs-string">+272</span>E<br>O	✯	U<span class="hljs-string">+272</span>F<br>P	✴	U<span class="hljs-string">+2734</span><br>Q	🌟	U<span class="hljs-string">+1</span>F31F<br>R	🟌	U<span class="hljs-string">+1</span>F7CC<br>S	🟇	U<span class="hljs-string">+1</span>F7C7<br>T	🌠	U<span class="hljs-string">+1</span>F320<br>U	🟉	U<span class="hljs-string">+1</span>F7C9<br>V	🟀	U<span class="hljs-string">+1</span>F7C0<br>W	🟃	U<span class="hljs-string">+1</span>F7C3<br>X	🟆	U<span class="hljs-string">+1</span>F7C6<br>Y	🟐	U<span class="hljs-string">+1</span>F7D0<br>Z	🟔	U<span class="hljs-string">+1</span>F7D4<br>=	✲	U<span class="hljs-string">+2732</span><br>&#123;	✸	U<span class="hljs-string">+2738</span><br>&#125;	🞱	U<span class="hljs-string">+1</span>F7B1<br><br></code></pre></td></tr></table></figure>
+<p>然后把文本文件里面的字符按照表里给的对应英文字母替换即可。最后结果为：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-number">1</span>：FLAG<span class="hljs-operator">=</span><br><span class="hljs-number">2</span>：ISCC&#123;<br><span class="hljs-number">3</span>：TCQIU<br><span class="hljs-number">4</span>：WVLVH<br><span class="hljs-number">5</span>：LZDF&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="降维打击"><a class="markdownIt-Anchor" href="#降维打击"></a> 降维打击</h2>
+<p>这题写的我真的是很难受。最后一部分整了半天。</p>
+<p>flag格式：ISCC{xxxx-xxxx-xxxx}</p>
+<p>首先下载附件，解压得到一个图片。</p>
+<p><img src="https://s2.loli.net/2022/05/02/pbCsNHajOFcqfyY.png" srcset="/img/loading.gif" lazyload alt="misc-DimensionalityReductionStrike-19" /></p>
+<p>啊，是伊雷娜。</p>
+<p>用binwalk看看有没有文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell">└─$ binwalk misc-DimensionalityReductionStrike-19.png <br><br>DECIMAL       HEXADECIMAL     DESCRIPTION<br>--------------------------------------------------------------------------------<br>0             0x0             PNG image, 1192 x 1656, 8-bit colormap, non-interlaced<br>882           0x372           Zlib compressed data, best compression<br>290500        0x46EC4         PNG image, 200 x 400, 8-bit/color RGB, non-interlaced<br>290541        0x46EED         Zlib compressed data, default compression<br></code></pre></td></tr></table></figure>
+<p>可以看到这里是有东西的。有一个200*400大小的图像文件。但是binwalk提不出来…所以就换foremost来提了。</p>
+<p><img src="https://s2.loli.net/2022/05/02/sulnctUJ14kD2O5.png" srcset="/img/loading.gif" lazyload alt="00000567" /></p>
+<p>可以看到提出来的图片是这样的。算是二值图像了。结合题目降维打击，应该是要我把这个图像展开为一维了。按行展开肯定不行，因为有一半都是纯黑色，提取出来的数据没有关联。稍微看了下列展开的结果。如果把像素值255表示为1的话。前面几个像素点的转换结果刚好是8950。这是PNG文件的文件头。看来方向对了。</p>
+<p>写个脚本提一下数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># extract.py</span><br><span class="hljs-keyword">from</span> PIL <span class="hljs-keyword">import</span> Image<br><span class="hljs-keyword">from</span> libnum <span class="hljs-keyword">import</span> b2s<br><br>img = Image.<span class="hljs-built_in">open</span>(<span class="hljs-string">r&quot;00000567.png&quot;</span>)<br><br>weight, height = img.size<br>img_gray = img.convert(<span class="hljs-string">&quot;L&quot;</span>)<br><br>bin_data = []<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(weight):<br>    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(height):<br>        <span class="hljs-keyword">if</span> img_gray.getpixel((i,j)) == <span class="hljs-number">255</span>:<br>            bin_data.append(<span class="hljs-string">&quot;1&quot;</span>)<br>        <span class="hljs-keyword">else</span> :<br>            bin_data.append(<span class="hljs-string">&quot;0&quot;</span>)<br><br>data = <span class="hljs-string">&quot;&quot;</span>.join(bin_data)<br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">r&quot;data.png&quot;</span>, <span class="hljs-string">&quot;wb&quot;</span>) <span class="hljs-keyword">as</span> fp:<br>    fp.write(b2s(data))<br></code></pre></td></tr></table></figure>
+<p>提取出来的数据可以作为图像阅读。</p>
+<p><img src="https://s2.loli.net/2022/05/02/e6OXdwMmx1U58Q9.png" srcset="/img/loading.gif" lazyload alt="data" /></p>
+<p>到这里看的我一头雾水。这是什么图像密码。我都没见过，找了一圈图形密码，就是没找到和这个类似的。</p>
+<p>想起原图是伊雷娜的图，不会是魔女之旅里面的文字吧？</p>
+<p>百度了一下没想带还真有…</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Gq4y1g7yw?spm_id_from=333.999.0.0">https://www.bilibili.com/video/BV1Gq4y1g7yw?spm_id_from=333.999.0.0</a></p>
+<p><img src="https://s2.loli.net/2022/05/02/N4TitScG2dek19V.png" srcset="/img/loading.gif" lazyload alt="image-20220502221726137" /></p>
+<p>然后我就遇到了这道题最大的难点（对我来说）。我找不到对应的字母。或者说找到的都不对。能确定的是C、K、I(i)、U和N。其他的不知道对应哪一个。</p>
+<p>后面又找了一个：<a target="_blank" rel="noopener" href="https://www.bilibili.com/read/cv8724055/">https://www.bilibili.com/read/cv8724055/</a></p>
+<p>得到答案为：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs">fckziuurqknf或者fckziuurpknf<br>zckfiuurqknz或者zckfiuurpknz<br></code></pre></td></tr></table></figure>
+<p>然后按照格式提交上去不对…我很想直到出题人是怎么写的这几个字…</p>
+<p>最后尝试了这个</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">ISCC</span><span class="hljs-template-variable">&#123;FCKZ-IUUR-PKNF&#125;</span><br></code></pre></td></tr></table></figure>
+<p>结果过了。</p>
+<p>…</p>
+<p>让我们回到题目的flag格式：</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">flag格式：ISCC</span><span class="hljs-template-variable">&#123;xxxx-xxxx-xxxx&#125;</span><br></code></pre></td></tr></table></figure>
+<p>作者你这不是坑爹吗。</p>
+<h2 id="2022冬奥会"><a class="markdownIt-Anchor" href="#2022冬奥会"></a> 2022冬奥会</h2>
+<div class="note note-info">
+            <p>于2022-05-11新增</p>
+          </div>
+<p>与单板小将苏翊鸣题解一致。修改图片高度。得到信息：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-symbol">&amp;#x51b0;</span><span class="hljs-symbol">&amp;#x58a9;</span><span class="hljs-symbol">&amp;#x58a9;</span><span class="hljs-symbol">&amp;#x7684;</span><span class="hljs-symbol">&amp;#x5c0f;</span><span class="hljs-symbol">&amp;#x4f19;</span><span class="hljs-symbol">&amp;#x4f34;</span><span class="hljs-symbol">&amp;#x7ecf;</span><span class="hljs-symbol">&amp;#x5e38;</span><span class="hljs-symbol">&amp;#x88ab;</span><span class="hljs-symbol">&amp;#x4eba;</span><span class="hljs-symbol">&amp;#x51b7;</span><span class="hljs-symbol">&amp;#x843d;</span><span class="hljs-symbol">&amp;#xff0c;</span><span class="hljs-symbol">&amp;#x4f60;</span><span class="hljs-symbol">&amp;#x77e5;</span><span class="hljs-symbol">&amp;#x9053;</span><span class="hljs-symbol">&amp;#x5b83;</span><span class="hljs-symbol">&amp;#x7684;</span><span class="hljs-symbol">&amp;#x539f;</span><span class="hljs-symbol">&amp;#x578b;</span><span class="hljs-symbol">&amp;#x662f;</span><span class="hljs-symbol">&amp;#x4ec0;</span><span class="hljs-symbol">&amp;#x4e48;</span><span class="hljs-symbol">&amp;#x5417;</span><span class="hljs-symbol">&amp;#xff1f;</span><br></code></pre></td></tr></table></figure>
+<p>unicode编码，问的是雪容融的原型是什么。答案是灯笼。</p>
+<h2 id="真相只有一个"><a class="markdownIt-Anchor" href="#真相只有一个"></a> 真相只有一个</h2>
+<div class="note note-info">
+            <p>于2022-05-12新增</p>
+          </div>
+<p>下载文件。里面有一张图片，一个文本，一个未知文件。</p>
+<p>文本里面包含了很多的空白字符，空格制表符啥的。应该是snow隐写。试了一下直接用snow提取：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs powershell">F:\CTFTools\隐写\SNOW&gt;SNOW.EXE <span class="hljs-literal">-C</span> F:\Download\CTF\ISCC2022\真相只有一个\flag.txt<br><span class="hljs-built_in">h</span><br> bn1aagwanter <span class="hljs-built_in">h</span>:lwse<br></code></pre></td></tr></table></figure>
+<p>看样子不是什么有用的东西。应该是要密码。</p>
+<p>图片打开的时候报了一个CRC错误的警告。这个应该是图像的宽度或者高度被修改了才会出现的。但是原图像没有失真扭曲，所以应该是高度被修改了。把高度改大一点，左下角出现了摩斯密码。翻译一下。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">-.<span class="hljs-regexp">/---/</span>-<span class="hljs-regexp">/..../</span>.<span class="hljs-regexp">/.-./</span>.<br>nothere<br></code></pre></td></tr></table></figure>
+<p>嗯…这个可能是密码，但也不一定，尝试用这个密码解snow。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell">F:\CTFTools\隐写\SNOW&gt;SNOW.EXE <span class="hljs-literal">-C</span> <span class="hljs-literal">-p</span> nothere F:\Download\CTF\ISCC2022\真相只有一个\flag.txt<br>y .bpti   awds1)n.. n  aWarning: residual of <span class="hljs-number">5</span> bits not uncompressed<br></code></pre></td></tr></table></figure>
+<p>失败了，看来这个应该就是提示你flag不在这。</p>
+<p>那么现在就剩下一个文件了。这个文件不知道是什么类型的。先用二进制看看。</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs tap">00<span class="hljs-number"> 00 </span>03<span class="hljs-number"> 04 </span>14<span class="hljs-number"> 00 </span>01<span class="hljs-number"> 00 </span>08<span class="hljs-number"> 00 </span>08 8B<span class="hljs-number"> 49 </span>54<span class="hljs-number"> 87 </span>DA 	�����‹IT‡Ú<br>DD<span class="hljs-number"> 97 </span>95 D2<span class="hljs-number"> 22 </span>00<span class="hljs-number"> 88 </span>D3 2C<span class="hljs-number"> 00 </span>0D<span class="hljs-number"> 00 </span>00<span class="hljs-number"> 00 </span>73 74		Ý—•Ò&quot;�ˆÓ,� ���st<br>72<span class="hljs-number"> 65 </span>61 6D 2E<span class="hljs-number"> 70 </span>63<span class="hljs-number"> 61 </span>70 6E<span class="hljs-number"> 67 </span>4F<span class="hljs-number"> 15 </span>F0<span class="hljs-number"> 01 </span>EF		ream.pcapngOðï<br></code></pre></td></tr></table></figure>
+<p>可以看到有个流量包。而且看文件开头的那些数据。14 00 01 00 如果经常做压缩包相关的题的，这个是加密压缩包会出现的特征。所以判断这是一个压缩包，但是缺少了头。所以我们补上即可。修复完之后，再看压缩包内文件PK头部分，也有加密特征，说明这个应该是真加密，我们需要找到对应的密码。</p>
+<p>翻了一圈在图像里面找到了。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">706173737764efbc 9a313939382f7878  passwd.. <span class="hljs-string">.1998/xx</span><br>2f78782492492492 4924924924924920  <span class="hljs-string">/xx</span>$<span class="hljs-string">.I</span>$. I$<span class="hljs-string">.I</span>$<span class="hljs-string">.I</span> <br>248eda97b24fc049 53b6b6db6db6db6d  $<span class="hljs-string">....O.I</span> S.<span class="hljs-string">..m..m</span><br></code></pre></td></tr></table></figure>
+<p>LSB提一下，看到有个passwd，后面是个日期。这个提示我们密码是个8位数字。所以直接爆破。得到密码19981111。</p>
+<p>解压后得到一个包文件。用wireshark打开看看。可以看到几乎全部是TFTP报文，说明这个里面有个传输的文件。TFTP是不加密的，所以我们直接将文件提取出来。</p>
+<p>菜单选择“文件”，“导出对象”，“TFTP”。可以看到有个password.mp3的文件。选中保存。</p>
+<p>将这个mp3文件放入Audacity。</p>
+<p><img src="https://s2.loli.net/2022/05/12/qKaNGjLQhrtc1Ck.jpg" srcset="/img/loading.gif" lazyload alt="password" /></p>
+<p>可以看到后方有不规则的波形。是摩斯电码。解密得到isccmisc。这个文件的名字就叫password。所以这个结果应该就是snow的密码。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell">F:\CTFTools\隐写\SNOW&gt;SNOW.EXE <span class="hljs-literal">-C</span> <span class="hljs-literal">-p</span> isccmisc F:\Download\CTF\ISCC2022\真相只有一个\flag.txt<br><span class="hljs-number">94</span>jN<span class="hljs-literal">-itGW-A9OH</span><br></code></pre></td></tr></table></figure>
+<p>得到flag。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">ISCC&#123;<span class="hljs-number">94</span>jN<span class="hljs-literal">-itGW-A9OH</span>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="reverse"><a class="markdownIt-Anchor" href="#reverse"></a> Reverse</h1>
+<h2 id="amys-code"><a class="markdownIt-Anchor" href="#amys-code"></a> Amy’s Code</h2>
+<p>逆向还没入门，所以挑了简单的题练手。哎，没有师傅带自己学是真的进展缓慢。</p>
+<p>文件下载下来，StuPE看一下是32位程序。</p>
+<p>运行一下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">Please input flag：wafsafwfaw<br>Wrong!<br></code></pre></td></tr></table></figure>
+<p>看样子是我要自己逆向出flag了。</p>
+<p>IDA打开看看。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> __cdecl <span class="hljs-title function_">main_0</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">const</span> <span class="hljs-type">char</span> **argv, <span class="hljs-type">const</span> <span class="hljs-type">char</span> **envp)</span><br>&#123;<br>  <span class="hljs-type">char</span> Destination[<span class="hljs-number">520</span>]; <span class="hljs-comment">// [esp+DCh] [ebp-410h] BYREF</span><br>  <span class="hljs-type">char</span> Source[<span class="hljs-number">516</span>]; <span class="hljs-comment">// [esp+2E4h] [ebp-208h] BYREF</span><br><br>  j__printf(aPleaseInputFla);<br>  sub_411717((va_list)<span class="hljs-string">&quot;%s&quot;</span>, (<span class="hljs-type">char</span>)Source);<br>  j__strcpy(Destination, Source);<br>  sub_4115FF(Destination);<br>  <span class="hljs-keyword">if</span> ( sub_411433(Destination) )<br>    j__printf(<span class="hljs-string">&quot;Correct!\n&quot;</span>);<br>  <span class="hljs-keyword">else</span><br>    j__printf(<span class="hljs-string">&quot;Wrong!\n&quot;</span>);<br>  j__system(<span class="hljs-string">&quot;pause&quot;</span>);<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>流程很简单。</p>
+<p>首先读入，然后进入sub_4115FF这个函数处理一下输入的字符串。然后使用sub_411433函数进行判断。重点应该就是这两个函数了。</p>
+<p>先进入sub_4115FF这个函数看看。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// attributes: thunk</span><br><span class="hljs-type">int</span> __cdecl <span class="hljs-title function_">sub_4115FF</span><span class="hljs-params">(<span class="hljs-type">char</span> *Str)</span><br>&#123;<br>  <span class="hljs-keyword">return</span> sub_4128A0(Str);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>跳转到新函数sub_4128A0。跟进。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> __cdecl <span class="hljs-title function_">sub_4128A0</span><span class="hljs-params">(<span class="hljs-type">char</span> *Str)</span><br>&#123;<br>  <span class="hljs-type">int</span> result; <span class="hljs-comment">// eax</span><br>  <span class="hljs-type">int</span> i; <span class="hljs-comment">// [esp+D0h] [ebp-14h]</span><br>  <span class="hljs-type">signed</span> <span class="hljs-type">int</span> v3; <span class="hljs-comment">// [esp+DCh] [ebp-8h]</span><br><br>  v3 = j__strlen(Str);<br>  <span class="hljs-keyword">for</span> ( i = <span class="hljs-number">0</span>; ; ++i )<br>  &#123;<br>    result = i;<br>    <span class="hljs-keyword">if</span> ( i &gt;= v3 )<br>      <span class="hljs-keyword">break</span>;<br>    Str[i] ^= i;<br>  &#125;<br>  <span class="hljs-keyword">return</span> result;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这个函数逻辑还是很好理解的。就是把对应字符串的字符异或上他的索引值。</p>
+<p>在到sub_411433函数看看。其跳转到sub_412550了，我们也跟进。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> __cdecl <span class="hljs-title function_">sub_412550</span><span class="hljs-params">(<span class="hljs-type">char</span> *Str)</span><br>&#123;<br>  <span class="hljs-type">int</span> j; <span class="hljs-comment">// [esp+D0h] [ebp-14Ch]</span><br>  <span class="hljs-type">int</span> i; <span class="hljs-comment">// [esp+DCh] [ebp-140h]</span><br>  <span class="hljs-type">int</span> v4[<span class="hljs-number">32</span>]; <span class="hljs-comment">// [esp+E8h] [ebp-134h] BYREF</span><br>  <span class="hljs-type">int</span> v5; <span class="hljs-comment">// [esp+168h] [ebp-B4h]</span><br>  <span class="hljs-type">char</span> v6[<span class="hljs-number">24</span>]; <span class="hljs-comment">// [esp+174h] [ebp-A8h] BYREF</span><br>  <span class="hljs-type">int</span> v7; <span class="hljs-comment">// [esp+18Ch] [ebp-90h]</span><br>  __int16 v8; <span class="hljs-comment">// [esp+190h] [ebp-8Ch]</span><br>  <span class="hljs-type">int</span> v9[<span class="hljs-number">31</span>]; <span class="hljs-comment">// [esp+19Ch] [ebp-80h]</span><br><br>  v9[<span class="hljs-number">0</span>] = <span class="hljs-number">149</span>;v9[<span class="hljs-number">1</span>] = <span class="hljs-number">169</span>;v9[<span class="hljs-number">2</span>] = <span class="hljs-number">137</span>;v9[<span class="hljs-number">3</span>] = <span class="hljs-number">134</span>;<br>  v9[<span class="hljs-number">4</span>] = <span class="hljs-number">212</span>;v9[<span class="hljs-number">5</span>] = <span class="hljs-number">188</span>;v9[<span class="hljs-number">6</span>] = <span class="hljs-number">177</span>;v9[<span class="hljs-number">7</span>] = <span class="hljs-number">184</span>;<br>  v9[<span class="hljs-number">8</span>] = <span class="hljs-number">177</span>;v9[<span class="hljs-number">9</span>] = <span class="hljs-number">197</span>;v9[<span class="hljs-number">10</span>] = <span class="hljs-number">192</span>;v9[<span class="hljs-number">11</span>] = <span class="hljs-number">179</span>;<br>  v9[<span class="hljs-number">12</span>] = <span class="hljs-number">153</span>;v9[<span class="hljs-number">13</span>] = <span class="hljs-number">197</span>;v9[<span class="hljs-number">14</span>] = <span class="hljs-number">159</span>;v9[<span class="hljs-number">15</span>] = <span class="hljs-number">163</span>;<br>  v9[<span class="hljs-number">16</span>] = <span class="hljs-number">160</span>;v9[<span class="hljs-number">17</span>] = <span class="hljs-number">167</span>;v9[<span class="hljs-number">18</span>] = <span class="hljs-number">169</span>;v9[<span class="hljs-number">19</span>] = <span class="hljs-number">184</span>;<br>  v9[<span class="hljs-number">20</span>] = <span class="hljs-number">0</span>;v9[<span class="hljs-number">21</span>] = <span class="hljs-number">0</span>;v9[<span class="hljs-number">22</span>] = <span class="hljs-number">0</span>;v9[<span class="hljs-number">23</span>] = <span class="hljs-number">0</span>;<br>  v9[<span class="hljs-number">24</span>] = <span class="hljs-number">0</span>;v9[<span class="hljs-number">25</span>] = <span class="hljs-number">0</span>;v9[<span class="hljs-number">26</span>] = <span class="hljs-number">0</span>;v9[<span class="hljs-number">27</span>] = <span class="hljs-number">0</span>;<br>  v9[<span class="hljs-number">28</span>] = <span class="hljs-number">0</span>;v9[<span class="hljs-number">29</span>] = <span class="hljs-number">0</span>;<br>  <span class="hljs-built_in">strcpy</span>(v6, <span class="hljs-string">&quot;LWHFUENGDJGEFHYDHIGJ&quot;</span>);	<span class="hljs-comment">//len = 20</span><br>  v7 = <span class="hljs-number">0</span>;<br>  v8 = <span class="hljs-number">0</span>;<br>  v5 = j__strlen(Str);<br>  j__memset(v4, <span class="hljs-number">0</span>, <span class="hljs-number">0x78</span>u);<br>  <span class="hljs-keyword">for</span> ( i = <span class="hljs-number">0</span>; i &lt; v5; ++i )<br>    v4[i] = v6[i] + Str[i];<br>  <span class="hljs-keyword">for</span> ( j = <span class="hljs-number">0</span>; j &lt; v5; ++j )<br>  &#123;<br>    <span class="hljs-keyword">if</span> ( v4[j] != v9[j] )<br>      <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>接下来只要逆这个运算过程即可。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">for</span> ( i = <span class="hljs-number">0</span>; i &lt; v5; ++i )<br>    v4[i] = v6[i] + Str[i];<br></code></pre></td></tr></table></figure>
+<p>首先我们来解出Str是什么。看样子str长度应该要为20。由此得到我们这个函数期望输入的字符串。接下来再反向sub_4128A0函数即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># solve.py</span><br><br>v9 = [<br>    <span class="hljs-number">149</span>, <span class="hljs-number">169</span>, <span class="hljs-number">137</span>, <span class="hljs-number">134</span>,<br>    <span class="hljs-number">212</span>, <span class="hljs-number">188</span>, <span class="hljs-number">177</span>, <span class="hljs-number">184</span>,<br>    <span class="hljs-number">177</span>, <span class="hljs-number">197</span>, <span class="hljs-number">192</span>, <span class="hljs-number">179</span>,<br>    <span class="hljs-number">153</span>, <span class="hljs-number">197</span>, <span class="hljs-number">159</span>, <span class="hljs-number">163</span>,<br>    <span class="hljs-number">160</span>, <span class="hljs-number">167</span>, <span class="hljs-number">169</span>, <span class="hljs-number">184</span>,<br>    <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>,<br>    <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>,<br>    <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]<br><br>v6 = <span class="hljs-string">&quot;LWHFUENGDJGEFHYDHIGJ&quot;</span><br><br>inputStr = []<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(v6)):<br>    inputStr.append(v9[i] - <span class="hljs-built_in">ord</span>(v6[i]))<br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(inputStr)):<br>    inputStr[i] ^= i<br><br><span class="hljs-built_in">print</span>([<span class="hljs-built_in">chr</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> inputStr])<br><br><span class="hljs-comment"># ISCC&#123;reverse_pHPHOp&#125;</span><br></code></pre></td></tr></table></figure>
+<h2 id="getthetable"><a class="markdownIt-Anchor" href="#getthetable"></a> GetTheTable</h2>
+<div class="note note-info">
+            <p>于2022-05-11新增</p>
+          </div>
+<p>下载附件IDA打开。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c">n1 = <span class="hljs-number">18</span>;<br>  <span class="hljs-built_in">strcpy</span>(str, <span class="hljs-string">&quot;ERaQux2uV3u5F736EjkECSDVLp&quot;</span>);<br>  <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%s&quot;</span>, plainText);<br>  n = <span class="hljs-built_in">strlen</span>(plainText);<br>  <span class="hljs-keyword">if</span> ( n &lt;= <span class="hljs-number">32</span> )<br>  &#123;<br>    *(_QWORD *)&amp;len[<span class="hljs-number">4</span>] = <span class="hljs-number">0</span>i64;<br>    *(_QWORD *)len = (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>)(<span class="hljs-number">138</span> * <span class="hljs-built_in">strlen</span>(plainText) / <span class="hljs-number">0x64</span>) + <span class="hljs-number">1</span>;<br>    <span class="hljs-built_in">strcpy</span>(str12581, <span class="hljs-string">&quot;123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz&quot;</span>);<br>    encryption = (<span class="hljs-type">char</span> *)<span class="hljs-built_in">malloc</span>(*(<span class="hljs-type">int</span> *)len);<br>    index = <span class="hljs-number">0</span>;<br></code></pre></td></tr></table></figure>
+<p>是base58加密。str应该就是我们加密过后的字符串。把字符串拿出来进行base58解密即可得到flag。</p>
+<h1 id="未完成"><a class="markdownIt-Anchor" href="#未完成"></a> 未完成</h1>
+<h2 id="藏在星空中的诗-2"><a class="markdownIt-Anchor" href="#藏在星空中的诗-2"></a> 藏在星空中的诗-2</h2>
+<div class="note note-info">
+            <p>于2022-05-12新增</p>
+          </div>
+<p>下载附件，里面就一个文本文件。</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-string">\🌟🌠🌠✴🟉\🌟🌠🌠★⍣\🌟🌠🌠✴⍣\🌟🌠🌠✴⍣\🌟🌠🌠✧≛\🌟🌠🌠✧🟉\🌟🌠🌠✴🟉\🌟🌠🌠✴🟌\🌟🌠🌠✧✧\🌟🌠🌠✲≛\🌟🌠🌠☆🟌\🌟🌠🌠✧✡\🌟🌠🌠☆🟌\🌟🌠🌠★✧\🌟🌠🌠⍣✸\🌟🌠🌠✴⍣\🌟🌠🌠✧🟉\🌟🌠🌠✴✡\🌟🌠🌠★★\🌟🌠🌠✧⚝</span><br></code></pre></td></tr></table></figure>
+<p>可以看到有个斜杠。这个应该是unicode。Unicode有好几种分隔符，使用\开头的有\u和\u+，这个看样子是\u。所以🌟可以替换位u。观察到每个unicode前面都有🌠🌠，而英文字符的unicode前面都是00。猜测这个替换了00，所以将其替换回去。</p>
+<p>这里猜测前五个字符是“ISCC{”而最后一个字符是&quot;}&quot;。可以得到对应的Unicode编码。</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs taggerscript">ISCC&#123;<br><span class="hljs-symbol">\u0049</span><span class="hljs-symbol">\u0053</span><span class="hljs-symbol">\u0043</span><span class="hljs-symbol">\u0043</span><span class="hljs-symbol">\u007b</span><br>&#125;<br><span class="hljs-symbol">\u007d</span><br></code></pre></td></tr></table></figure>
+<p>可以发现前面其实可以对上的。你看文件中第三个和第四个编码，是一样的。很有可能就是我们猜测的样子。得到编码后对应替换。</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs taggerscript"><span class="hljs-symbol">\u0049</span><span class="hljs-symbol">\u0053</span><span class="hljs-symbol">\u0043</span><span class="hljs-symbol">\u0043</span><span class="hljs-symbol">\u007b</span><span class="hljs-symbol">\u0079</span><span class="hljs-symbol">\u0049</span>\u004🟌<span class="hljs-symbol">\u0077</span>\u00✲b\u00☆🟌\u007✡\u00☆🟌<span class="hljs-symbol">\u0057</span>\u003✸<span class="hljs-symbol">\u0043</span><span class="hljs-symbol">\u0079</span>\u004✡<span class="hljs-symbol">\u0055</span><span class="hljs-symbol">\u007d</span><br></code></pre></td></tr></table></figure>
+<p>最后得到这个。这里面最后还有几个字符不知道。看看能不能再找出几个替代。</p>
+<p>对于当前的十六进制我们已经有了[0,3,4,5,7,9,b,d],那么还剩下[1,2,6,8,a,c,e,f]。</p>
+<p>对于\u00✲b</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ada">\u002b	: +<br>\u006b	: <span class="hljs-type">k</span><br></code></pre></td></tr></table></figure>
+<p>所以应该是6。</p>
+<p>对于\u007✡，可选的只有[1,2,8,a,c,e,f]</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-string">\u0071</span>	:q<br><span class="hljs-string">\u0072</span>	:r<br><span class="hljs-string">\u0078</span>	:x<br><span class="hljs-string">\u007a</span>	:z<br><span class="hljs-string">\u007c</span>	:|<br><span class="hljs-string">\u007e</span>	:~<br><span class="hljs-string">\u007f</span>	:不可见<br></code></pre></td></tr></table></figure>
+<p>c,e,f被排除。当前可选1，2，8，a</p>
+<p>对于\u003✸，可选[1,2,8,a,c,e,f]</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-string">\u0031</span>	:<span class="hljs-number">1</span><br><span class="hljs-string">\u0032</span>	:<span class="hljs-number">2</span><br><span class="hljs-string">\u0038</span>	:<span class="hljs-number">8</span><br><span class="hljs-string">\u003a</span>	::<br><span class="hljs-string">\u003c</span>	:&lt;<br><span class="hljs-string">\u003e</span>	:&gt;<br><span class="hljs-string">\u003f</span>	:?<br></code></pre></td></tr></table></figure>
+<p>可选1，2，8</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/CTF/">CTF</a>
+                    
+                      <a class="hover-with-bg" href="/tags/writeup/">writeup</a>
+                    
+                      <a class="hover-with-bg" href="/tags/MISC/">MISC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Reverse/">Reverse</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/05/04/%E7%89%A9%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8OpenEuler%E7%B3%BB%E7%BB%9FDHCP%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">物理服务器OpenEuler系统DHCP网络环境配置</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/01/NahamCon2022/">
+                        <span class="hidden-mobile">NahamCon2022</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
