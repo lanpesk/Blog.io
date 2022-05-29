@@ -27,12 +27,12 @@
 <meta property="og:image" content="https://s2.loli.net/2022/05/26/NlDXTEFbQ5tzogG.jpg">
 <meta property="og:image" content="https://s2.loli.net/2022/05/26/hZJM13C4yniNSmu.jpg">
 <meta property="article:published_time" content="2022-05-27T04:07:03.000Z">
-<meta property="article:modified_time" content="2022-05-27T04:07:03.937Z">
+<meta property="article:modified_time" content="2022-05-28T02:27:37.743Z">
 <meta property="article:author" content="lanpesk">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="writeup">
-<meta property="article:tag" content="MISC">
 <meta property="article:tag" content="Crypto">
+<meta property="article:tag" content="MISC">
 <meta property="article:tag" content="Reverse， PWN， Web">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://s2.loli.net/2022/05/20/qSLBC9fJPiw5RaE.jpg">
@@ -197,6 +197,8 @@
               <p>BUU的Dest0g3 520迎新赛。babyRSA、babyAES、ezDLP、ezStream、Mr.Doctor、Pngenius、EasyEncode、你知道js吗、EasyWord、Python_jail、 4096、simpleXOR、hi 、 ez_arrch的题解。</p>
 <span id="more"></span>
 <img src="https://s2.loli.net/2022/05/20/qSLBC9fJPiw5RaE.jpg" srcset="/img/loading.gif" lazyload style="zoom: 33%;" />
+<p>保住了前100，累死了都。</p>
+<p>最后主办方清了一波作弊的，完赛后来看我直接70以内了。属实乐。</p>
 <h1 id="crypto"><a class="markdownIt-Anchor" href="#crypto"></a> Crypto</h1>
 <h2 id="babyrsa"><a class="markdownIt-Anchor" href="#babyrsa"></a> babyRSA</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> Crypto.Util.number <span class="hljs-keyword">import</span> bytes_to_long, getPrime<br><span class="hljs-keyword">from</span> gmpy2 <span class="hljs-keyword">import</span> next_prime<br>p = getPrime(<span class="hljs-number">1024</span>)<br>q = next_prime(p)<br>n = p*q<br>flag = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;flag.txt&#x27;</span>, <span class="hljs-string">&#x27;rb&#x27;</span>).read()<br>m = bytes_to_long(flag)<br>e = <span class="hljs-number">65537</span><br>c = <span class="hljs-built_in">pow</span>(m, e, n)<br><span class="hljs-built_in">print</span>(n)<br><span class="hljs-built_in">print</span>(c)<br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">27272410937497615429184017335437367466288981498585803398561456300019447702001403165885200936510173980380489828828523983388730026101865884520679872671569532101708469344562155718974222196684544003071765625134489632331414011555536130289106822732544904502428727133498239161324625698270381715640332111381465813621908465311076678337695819124178638737015840941223342176563458181918865641701282965455705790456658431641632470787689389714643528968037519265144919465402561959014798324908010947632834281698638848683632113623788303921939908168450492197671761167009855312820364427648296494571794298105543758141065915257674305081267</span><br><span class="hljs-string">14181751948841206148995320731138166924841307246014981115736748934451763670304308496261846056687977917728671991049712129745906089287169170294259856601300717330153987080212591008738712344004443623518040786009771108879196701679833782022875324499201475522241396314392429412747392203809125245393462952461525539673218721341853515099201642769577031724762640317081252046606564108211626446676911167979492329012381654087618979631924439276786566078856385835786995011067720124277812004808431347148593882791476391944410064371926611180496847010107167486521927340045188960373155894717498700488982910217850877130989318706580155251854</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><br></code></pre></td></tr></table></figure>
@@ -424,9 +426,9 @@
                     
                       <a class="hover-with-bg" href="/tags/writeup/">writeup</a>
                     
-                      <a class="hover-with-bg" href="/tags/MISC/">MISC</a>
-                    
                       <a class="hover-with-bg" href="/tags/Crypto/">Crypto</a>
+                    
+                      <a class="hover-with-bg" href="/tags/MISC/">MISC</a>
                     
                       <a class="hover-with-bg" href="/tags/Reverse%EF%BC%8C-PWN%EF%BC%8C-Web/">Reverse， PWN， Web</a>
                     
@@ -444,6 +446,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/05/29/2022-CISCN-%E5%88%9D%E8%B5%9B/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">2022 CISCN 初赛</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
