@@ -1,0 +1,578 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/banner/piano_man.png">
+  <link rel="icon" href="/banner/piano_man.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="lanpesk">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="关于playfair密码的破解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Playfair Cracker">
+<meta property="og:url" content="http://example.com/2022/10/12/Playfair-Crack/index.html">
+<meta property="og:site_name" content="lanpesk">
+<meta property="og:description" content="关于playfair密码的破解。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-12T03:13:11.000Z">
+<meta property="article:modified_time" content="2022-10-12T03:26:37.846Z">
+<meta property="article:author" content="lanpesk">
+<meta property="article:tag" content="Cryptanalysis">
+<meta property="article:tag" content="ClassicCrypto">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>Playfair Cracker - lanpesk</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>lanpesk</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://s2.loli.net/2022/05/01/YwbfzI9vkWMaVc2.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Playfair Cracker">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-10-12 11:13" pubdate>
+        2022年10月12日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Playfair Cracker</h1>
+            
+            <div class="markdown-body">
+              <p>关于playfair密码的破解。</p>
+<span id="more"></span>
+<p>Playfair这个加密呢，之前做题一直有点困扰我。最近找到了一篇关于playfair crack的文章，就想着自己写一下里面的破解算法。原文给出了C语言实现这篇相当于是原文的翻译吧。<br />
+这是原文地址：<br />
+<a target="_blank" rel="noopener" href="http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-playfair/">http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-playfair/</a></p>
+<p>使用的是Simulated annealing(模拟退火)算法。要求明文长度至少要大于100字符。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><pre><code class="hljs processing"><span class="hljs-comment">//hill-climbing algorithm:</span><br><span class="hljs-number">1</span>-生成一个随机的<span class="hljs-built_in">key</span>,作为我们的<span class="hljs-string">&#x27;parent&#x27;</span>, 使用这个<span class="hljs-built_in">key</span>对密文进行解密，计算结果的适配度，并保存这个值。<br><span class="hljs-number">2</span>-微小的改变<span class="hljs-built_in">key</span>,比如随机的交换其中的两个字符。重新进行解密与评估，将评估结果保存。<br><span class="hljs-number">3</span>-如果修改的密钥适配度要高一些，那么将当前的<span class="hljs-built_in">key</span>作为parent，丢弃之前的parent。<br><span class="hljs-number">4</span>-回到<span class="hljs-number">2</span>， 除非在迭代一千次之后都没有提升。<br></code></pre></td></tr></table></figure>
+<p>在简单的单表或者多表替换密码中，我们可以采用爬山算法，每次迭代优化选择我们的key，直到把最优的key选择出来。但是仅仅将这种算法运用与playfair，我们是无法破解他的，爬山算法会进入一个局部最优的情况。所以我们需要让爬山算法偶尔能接收结果下降的改变，也就是我们的SA了。</p>
+<figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs q"><span class="hljs-comment">// Simulated annealing algorithm (hill-climbing enhance):</span><br><span class="hljs-number">1</span>-生成一个随机的<span class="hljs-built_in">key</span>,作为我们的&#x27;parent&#x27;, 使用这个<span class="hljs-built_in">key</span>对密文进行解密<br><span class="hljs-number">2</span>-计算当前密钥解密的出来的数据的适配度，并保存<br><span class="hljs-number">3</span>-for(TEMP = <span class="hljs-number">10</span>; TEMP &gt;= <span class="hljs-number">0</span>; TEMP -= STEP)<br>	for(<span class="hljs-built_in">count</span> = <span class="hljs-number">50000</span>; <span class="hljs-built_in">count</span> &gt; <span class="hljs-number">0</span>; <span class="hljs-built_in">count</span>--)<br>		微小的改变<span class="hljs-built_in">key</span>,比如随机的交换其中的两个字符，获得子密钥child。<br>		衡量当前子密钥的适配度<br>		<span class="hljs-built_in">set</span> dF = (子密钥适配度 - 父密钥适配度)<br>		if dF &gt; <span class="hljs-number">0</span><br>			parent = child<br>		if dF &lt; <span class="hljs-number">0</span> <br>			parent = child 在e^(dF/T)的概论下<br>			<br><span class="hljs-comment">// T是退火算法的温度参数</span><br></code></pre></td></tr></table></figure>
+<p>关于公式<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>e</mi><mfrac><mrow><mi>d</mi><mi>F</mi></mrow><mi>T</mi></mfrac></msup></mrow><annotation encoding="application/x-tex">e^{\frac{dF}{T}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.97902em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.97902em;"><span style="top:-3.363em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8800285714285714em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">F</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span></span></span></span></span></span></span></span>有以下的特点：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">变量</th>
+<th style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>e</mi><mfrac><mrow><mi>d</mi><mi>F</mi></mrow><mi>T</mi></mfrac></msup></mrow><annotation encoding="application/x-tex">e^{\frac{dF}{T}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.97902em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.97902em;"><span style="top:-3.363em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8800285714285714em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">F</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span></span></span></span></span></span></span></span>的值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>F</mi><mo>&lt;</mo><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">dF &lt;&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.73354em;vertical-align:-0.0391em;"></span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>l</mi><mi>o</mi><mi>s</mi><mi>e</mi><mspace width="1em"/><mn>0</mn></mrow><annotation encoding="application/x-tex">close \quad 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">0</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>F</mi><mtext> </mtext><mi>c</mi><mi>l</mi><mi>o</mi><mi>s</mi><mi>e</mi><mtext> </mtext><mn>0</mn></mrow><annotation encoding="application/x-tex">dF \ close \ 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="mspace"> </span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mspace"> </span><span class="mord">0</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>l</mi><mi>o</mi><mi>s</mi><mi>e</mi><mspace width="1em"/><mn>1</mn></mrow><annotation encoding="application/x-tex">close \quad 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">1</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>a</mi><mi>r</mi><mi>g</mi><mi>e</mi><mtext> </mtext><mi>T</mi></mrow><annotation encoding="application/x-tex">large \ T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">e</span><span class="mspace"> </span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>l</mi><mi>o</mi><mi>s</mi><mi>e</mi><mspace width="1em"/><mn>1</mn></mrow><annotation encoding="application/x-tex">close \quad 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">1</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>m</mi><mi>a</mi><mi>l</mi><mi>l</mi><mtext> </mtext><mi>T</mi></mrow><annotation encoding="application/x-tex">small \ T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mspace"> </span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>l</mi><mi>o</mi><mi>s</mi><mi>e</mi><mspace width="1em"/><mn>0</mn></mrow><annotation encoding="application/x-tex">close \quad 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">0</span></span></span></span></td>
+</tr>
+</tbody>
+</table>
+<p>我们将<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>e</mi><mfrac><mrow><mi>d</mi><mi>F</mi></mrow><mi>T</mi></mfrac></msup></mrow><annotation encoding="application/x-tex">e^{\frac{dF}{T}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.97902em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.97902em;"><span style="top:-3.363em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8800285714285714em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">F</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span></span></span></span></span></span></span></span>作为概论判断依据。如果他很接近1的话，我们基本上就等于接受了<code>parent = child</code>。而如果他很接近0的话，我们也就相当于不改变<code>parent</code>。而对T的修改也同理的。当T很大的时候，整体的幂次数会接近0，那么其值就接近了1，而T很小的时候，其值就会像负方向移动，更加接近0。随者程序的运行我们会不断的降低这个T，那么我们将越来越低可能的接收适配度降低的子密钥。</p>
+<p>我们为什么要这么做？还是为了跳出爬山算法的局部最优。爬山算法进入了局部最优那么我们就无法跳出了，添加这种接收损失的途径可以让我们有可能跳出局部最优，而且在我们尝试的次数足够多的时候，我们基本上都能够跳出原来的局部最优解。从而得到一个适配度更好的结果。当我们的温度T将到0之后，就和爬山算法别无二致了。</p>
+<p><font size="5"><strong>测量适配度</strong></font></p>
+<p>其实就是判断当前的明文和英文的拟合程度，也就是像不像是英文文本。一个和英文文本很像的明文将会获得一个高的分数，而杂乱无章的随机字符序列将会得到一个低的分数。这里我们使用quadgram statistics作为我们的分析工具。通过分析当前明文的分布和正常的英语是否接近来给出相应的分数。如果明文中有“QKPC”这种基本上看不到的英文序列，基本上就和英文文本说再见了。所以我们可以通过这种方式来评判一个解密密钥的好坏。</p>
+<p><font size="5"><strong>Quadgram Statistics</strong></font></p>
+<p>为了本文逻辑的完整性，我把另外一篇文章的内容也搬过来了</p>
+<p>原文地址：<a target="_blank" rel="noopener" href="http://www.practicalcryptography.com/cryptanalysis/text-characterisation/quadgrams/">http://www.practicalcryptography.com/cryptanalysis/text-characterisation/quadgrams/</a></p>
+<p>我们想要来判断一个明文片段是否和给定的语言种类接近，可以对Quadgram(四格图)进行计数，或者对4个字母一组进行计数。</p>
+<p>当然，single letter frequencies, bigrams 与 trigrams也是可以用来做这个的。但是Quadgram效果最好。在单词ATTACK中，我们的四格图为：<code>ATTA,TTAC,TACK</code>。</p>
+<p>想要用quadgram来判断文本是否和英文接近，我们首先要知道那些quadgram在英文里出现了。要做到这一点，我们需要用大量的文本片段去计算。比如用几本书的内容，统计其中出现的quadgram。然后计算每个quadgram出现的概论。</p>
+<p>在战争与和平中，统计出了2500000个quadgram。计算出每一个quadgram出现的概率，然后对他做log处理。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Quadgram</th>
+<th style="text-align:center">Count</th>
+<th style="text-align:center">Log Probability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AAAA</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">-6.40018764963</td>
+</tr>
+<tr>
+<td style="text-align:center">QKPC</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-9.40018764963</td>
+</tr>
+<tr>
+<td style="text-align:center">YOUR</td>
+<td style="text-align:center">1132</td>
+<td style="text-align:center">-3.34634122278</td>
+</tr>
+<tr>
+<td style="text-align:center">TION</td>
+<td style="text-align:center">4694</td>
+<td style="text-align:center">-2.72864456437</td>
+</tr>
+<tr>
+<td style="text-align:center">ATTA</td>
+<td style="text-align:center">359</td>
+<td style="text-align:center">-3.84509320105</td>
+</tr>
+</tbody>
+</table>
+<p>有部分quadgram出现的很频繁，这个quadgram就可以当作我们判断的一个依据。而QKPC这种序列是完全没有出现过，他的可能性是负无穷，表格上并不是，这是因为我们给概率定了一个下界。</p>
+<p>为了计算明文碎片整体的可能性，我们需要提取当前明文碎片所有的quadgram，然后将他们的概率相乘。</p>
+<p>还是拿<code>ATTACK</code>举例：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><mi>A</mi><mi>T</mi><mi>T</mi><mi>A</mi><mi>C</mi><mi>K</mi><mo stretchy="false">)</mo><mo>=</mo><mi>p</mi><mo stretchy="false">(</mo><mi>A</mi><mi>T</mi><mi>T</mi><mi>A</mi><mo stretchy="false">)</mo><mo>×</mo><mi>p</mi><mo stretchy="false">(</mo><mi>T</mi><mi>T</mi><mi>A</mi><mi>C</mi><mo stretchy="false">)</mo><mo>×</mo><mi>p</mi><mo stretchy="false">(</mo><mi>T</mi><mi>A</mi><mi>C</mi><mi>K</mi><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mi>p</mi><mo stretchy="false">(</mo><mi>A</mi><mi>T</mi><mi>T</mi><mi>A</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mo stretchy="false">(</mo><mi>A</mi><mi>T</mi><mi>T</mi><mi>A</mi><mo stretchy="false">)</mo></mrow><mi>N</mi></mfrac></mrow><annotation encoding="application/x-tex">p(ATTACK) = p(ATTA) \times p(TTAC) \times p(TACK) \\
+p(ATTA) = \frac{count(ATTA)}{N}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">p</span><span class="mopen">(</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">p</span><span class="mopen">(</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">A</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">p</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">p</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">p</span><span class="mopen">(</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">A</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.113em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">N</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault">n</span><span class="mord mathdefault">t</span><span class="mopen">(</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">A</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>最后将概率进行log操作。</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">(</mo><mi>A</mi><mi>T</mi><mi>T</mi><mi>A</mi><mi>C</mi><mi>K</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>=</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">(</mo><mi>A</mi><mi>T</mi><mi>T</mi><mi>A</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>+</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">(</mo><mi>T</mi><mi>T</mi><mi>A</mi><mi>C</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>+</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">(</mo><mi>T</mi><mi>A</mi><mi>C</mi><mi>K</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">log(p(ATTACK)) = log(p(ATTA)) + log(p(TTAC)) + log(p(TACK))
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathdefault">p</span><span class="mopen">(</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="mclose">)</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathdefault">p</span><span class="mopen">(</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">A</span><span class="mclose">)</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathdefault">p</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mclose">)</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathdefault">p</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></p>
+<p>具体实现很简单的。如果嫌麻烦，可以去原文下载python实现代码。</p>
+<p><font size="5"><strong>算法考量</strong></font></p>
+<p>在破解简单替换加密的时候，简单的对父密钥进行修改，并不能让我们破解playfair加密。通过添加其他的交换方式比如行交换、列交换、逆序、左移右移、反转、上下位移等等（这里主要是playfair的key是一个棋盘格式），我们很有可能能够得到正确的key。</p>
+<p>我们需要考虑的是我们新引入的变量：起始温度，温度下降阶，以及每阶中的迭代次数。迭代次数越高，我们能得到正确key的可能性就越大，但是耗时会越久。通过降低温度下降阶（每次下降的温度减小），我们能得到正确的key的可能性就越大，但是耗时会越久。而起始温度一般来说和密文的长度有关系。对于一个100字节长度的密文，起始温度在10附近。而对于300字节长的密文，起始温度在20附近。</p>
+<p>使用模拟退火算法破解playfair，可以参考这篇论文：“<a target="_blank" rel="noopener" href="http://www.tandfonline.com/doi/abs/10.1080/01611190701743658">Breaking Short Playfair Ciphers with the Simulated Annealing Algorithm</a>” by Cowan, M. Cryptologia, Vol 32, issue 1, 2008.</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Cryptanalysis/">Cryptanalysis</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ClassicCrypto/">ClassicCrypto</a>
+                    
+                      <a class="hover-with-bg" href="/tags/tools/">tools</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/04/SekaiCTF-2022/">
+                        <span class="hidden-mobile">SekaiCTF 2022</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css" />
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
